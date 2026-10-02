@@ -8,8 +8,16 @@ using UnityEngine;
 using Verse;
 
 namespace Universum.Utilities {
-    [HarmonyPatch(typeof(RimWorld.GenCelestial), "CelestialSunGlow", argumentTypes: new Type[] { typeof(int), typeof(int) })]
+    [HarmonyPatch]
     public class GenCelestial_CelestialSunGlow {
+    // PORT 1.6: antes esto era [HarmonyPatch(typeof(GenCelestial), "CelestialSunGlow",
+    // argumentTypes: new Type[] { typeof(int), typeof(int) })]. En 1.6 la firma no coincide
+    // (el oraculo la ve como params object[]), Type.GetMethod exige coincidencia EXACTA,
+    // devolvia null y Harmony fallaba con "Patching exception in method null", que se
+    // llevaba por delante el resto del parcheo. Ahora se autodesactiva si no lo encuentra.
+    public static bool Prepare() => TargetMethod() != null;
+
+    public static System.Reflection.MethodBase TargetMethod() => HarmonyLib.AccessTools.Method(typeof(RimWorld.GenCelestial), "CelestialSunGlow", new Type[] { typeof(int), typeof(int) });
         public static bool Prefix(ref float __result, int tile, int ticksAbs) {
             if (tile == -1) return false;
             if (!Cache.allowed_utility(WorldGridHelper.GetBiome(tile), "universum.remove_shadows")) return true;
