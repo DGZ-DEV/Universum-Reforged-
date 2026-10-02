@@ -354,3 +354,7 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+
+# Documentacion interna del port: no se publica, vive en el escritorio
+PORT_1.6_*
+PORT_A_1.6*
