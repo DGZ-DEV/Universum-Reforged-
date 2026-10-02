@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System.Reflection;
 
 namespace Universum.World.Patch {
@@ -14,7 +14,7 @@ namespace Universum.World.Patch {
 
         public static MethodBase TargetMethod() => AccessTools.Method("RimWorld.Planet.WorldGrid:TraversalDistanceBetween");
 
-        public static void Postfix(int start, int end, bool passImpassable, int maxDist, ref int __result) {
+        public static void Postfix(RimWorld.Planet.PlanetTile start, RimWorld.Planet.PlanetTile end, bool passImpassable, int maxDist, ref int __result) {
             bool fromOrbit = ObjectHolderCache.Exists(start);
             if (fromOrbit) {
                 __result = 20;

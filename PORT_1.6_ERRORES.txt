@@ -306,3 +306,51 @@
      de tipo (CS0718). Sus campos estaticos van con FieldInfo + GetValue.
    - Un reemplazo demasiado amplio toco lineas donde __instance era un Room o un District.
      El compilador senalo las 3 exactas y se revirtieron solo esas.
+
+================================================================================
+ LA PRUEBA EN EL JUEGO (01/10): EL MOD ESTABA MUERTO
+================================================================================
+
+ Player.log decia:
+   "Error in static constructor of Universum.Universum: TypeInitializationException"
+   y seis "Universum: Failed to find utility ..." (labels, trails, main_loop_parallelization,
+   vacuum_overlay, vacuum_decompression, vacuum_suffocation).
+
+ ES DECIR: la inicializacion se abortaba y lo que se veia en pantalla era RimWorld VANILLA.
+ En la pantalla parecia que todo funcionaba. Ese es el peligro de este port.
+
+ CAUSA EXACTA:
+   HarmonyException en TileFinder::IsValidTileForNewSettlement(PlanetTile, StringBuilder, bool)
+   -> InvalidProgramException: Invalid IL code in ..._Patch1, IL_02bd
+   El postfijo declaraba la firma de 1.5 (int tile, StringBuilder reason) y en 1.6 el metodo
+   recibe un PlanetTile. Harmony inyecta un int donde va un PlanetTile, genera IL invalido,
+   PatchAll lanza, y como el parcheo NO estaba protegido se llevaba por delante todo el
+   constructor: ni ajustes, ni definiciones, ni assets.
+
+ ARREGLO 1: la firma del postfijo pasa a PlanetTile y los indices por tile.tileId.
+
+ ARREGLO 2 (EL IMPORTANTE): todo el parcheo va dentro de un try/catch. Un solo parche malo ya no
+   puede matar el mod: carga igual, y el fallo queda escrito en el registro. Ademas
+   PortVerification.Log se ejecuta SIEMPRE, porque va despues del catch.
+
+ AUDITORIA DE LAS 112 LINEAS DE PARCHE:
+   El de TileFinder no era el unico. Se revisaron los 15 parametros de tipo del juego y se
+   encontraron TRES MAS con el mismo defecto, todos por el cambio int -> PlanetTile:
+
+     GetOrGenerateMapUtility   Postfix(int tile, ...)
+       1.6: GetOrGenerateMap(PlanetTile, IntVec3, WorldObjectDef, IEnumerable<GenStepWithParams>, bool)
+     WorldGrid                 Postfix(int start, int end, ...)
+       1.6: TraversalDistanceBetween(PlanetTile, PlanetTile, bool, int, bool)
+     Ocean_Masking             Postfix(ref int __result)
+       1.6: WorldDrawLayer_CurrentMapTile.Tile es una PROPIEDAD de tipo PlanetTile
+
+   Los tres se han corregido. El compilador no encontro ningun uso interno que arreglar.
+   Verificado ademas que PollutionGrid.map existe (la inyeccion ___map es valida).
+
+ LECCION DE FONDO: en 1.6 el indice de casilla del mundo dejo de ser int y es PlanetTile, y eso
+   cambia la FIRMA de muchos metodos de vanilla. Un parche que declare un parametro por tipo
+   (no con __instance ni ___campo) tiene que seguir esa firma. Si no la sigue, no da error de
+   compilacion: genera IL invalido y mata el mod en silencio.
+
+ PENDIENTE: repetir la prueba. Ahora el registro dira "Harmony ha parcheado N metodos" y la lista
+   de parches autodesactivados, aunque alguno mas falle.

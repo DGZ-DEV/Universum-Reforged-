@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Reflection;
 using Verse;
@@ -24,7 +24,7 @@ namespace Universum.World.Patch {
             return method;
         }
 
-        public static void Postfix(int tile, IntVec3 size, RimWorld.WorldObjectDef suggestedMapParentDef, ref Map __result) {
+        public static void Postfix(RimWorld.Planet.PlanetTile tile, IntVec3 size, RimWorld.WorldObjectDef suggestedMapParentDef, ref Map __result) {
             if (__result == null) return;
 
             ObjectHolder objectHolder = ObjectHolderCache.Get(tile);

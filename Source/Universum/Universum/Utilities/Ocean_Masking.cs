@@ -22,7 +22,7 @@ namespace Universum.Utilities {
 
         public static System.Reflection.MethodBase TargetMethod() => HarmonyLib.AccessTools.Method("RimWorld.Planet.WorldDrawLayer_CurrentMapTile:get_Tile");
 
-        public static void Postfix(ref int __result) {
+        public static void Postfix(ref RimWorld.Planet.PlanetTile __result) {
             if (__result == -1) return;
             if (Cache.allowed_utility(WorldGridHelper.GetBiome(__result), "universum.ocean_masking")) __result = -1;
         }
