@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System.Reflection;
 using System.Text;
 using Verse;
@@ -16,8 +16,8 @@ namespace Universum.World.Patch {
 
         public static MethodBase TargetMethod() => AccessTools.Method("RimWorld.Planet.TileFinder:IsValidTileForNewSettlement");
 
-        public static void Postfix(int tile, StringBuilder reason, ref bool __result) {
-            if (tile == -1 || __result || reason == null || !ObjectHolderCache.Exists(tile)) return;
+        public static void Postfix(RimWorld.Planet.PlanetTile tile, StringBuilder reason, ref bool __result) {
+            if (tile.tileId < 0 || __result || reason == null || !ObjectHolderCache.Exists(tile.tileId)) return;
 
             if (Find.WorldObjects.SettlementBaseAt(tile) != null) return;
 

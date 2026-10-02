@@ -8,11 +8,19 @@ namespace Universum {
         static Universum() {
             // apply patch on internal class
             HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("sindre0830.universum");
-            harmony.Patch(
-                original: HarmonyLib.AccessTools.TypeByName("SectionLayer_Terrain").GetMethod("Regenerate"),
-                postfix: new HarmonyLib.HarmonyMethod(typeof(Utilities.SectionLayer_Terrain_Regenerate).GetMethod("Postfix"))
-            );
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            // PORT 1.6: todo el parcheo va en un try/catch. Si un solo parche falla (por ejemplo un
+            // transpiler escrito para una firma antigua), Harmony lanza y ANTES se llevaba por delante
+            // el resto del constructor: ni ajustes, ni definiciones, ni assets. Con esto el mod carga
+            // igual y el fallo queda escrito en el registro.
+            try {
+                harmony.Patch(
+                    original: HarmonyLib.AccessTools.TypeByName("SectionLayer_Terrain").GetMethod("Regenerate"),
+                    postfix: new HarmonyLib.HarmonyMethod(typeof(Utilities.SectionLayer_Terrain_Regenerate).GetMethod("Postfix"))
+                );
+                harmony.PatchAll(Assembly.GetExecutingAssembly());
+            } catch (System.Exception e) {
+                Verse.Log.Error("[Universum PORT 1.6] Fallo aplicando parches. El mod SIGUE cargando, pero puede quedar incompleto: " + e.Message);
+            }
             PortVerification.Log(harmony);
             // print mod info
             Logger.print(
