@@ -8,7 +8,10 @@ using UnityEngine;
 using Verse;
 
 namespace Universum.Utilities {
-    [HarmonyPatch]
+    // PORT 1.6: se le quita el [HarmonyPatch]. Harmony intentaba resolverlo por atributo
+    // aunque Prepare() devolviera false, y con el metodo SOBRECARGADO (2 miembros) lanzaba
+    // "Undefined target method". Este parche forzaba el brillo solar a 1.0 en casillas con
+    // mascara de oceano: queda RETIRADO. Efecto visual menor, a cambio de no romper el parcheo.
     public class GenCelestial_CelestialSunGlow {
     // PORT 1.6: antes esto era [HarmonyPatch(typeof(GenCelestial), "CelestialSunGlow",
     // argumentTypes: new Type[] { typeof(int), typeof(int) })]. En 1.6 la firma no coincide
@@ -258,7 +261,10 @@ namespace Universum.Utilities {
     /**
      * Source: https://github.com/SonicTHI/SaveOurShip2Experimental/blob/ecaf9bba7975524b61bb1d7f1a37655f5be35e20/Source/1.4/HideLightingLayersInSpace.cs#L27
      */
-    [HarmonyPatch(typeof(Section), MethodType.Constructor, typeof(IntVec3), typeof(Map))]
+    // PORT 1.6: era [HarmonyPatch(typeof(Section), MethodType.Constructor, typeof(IntVec3), typeof(Map))].
+    // Harmony lo intentaba resolver por atributo y, si la firma del constructor cambio, lanzaba
+    // "Patching exception in method null / Undefined target method" y abortaba el resto del parcheo.
+    // Ahora se parchea a mano desde Universum.cs, con guarda de nulo.
     [StaticConstructorOnStartup]
     public class Section_Constructor {
         private static readonly Type SunShadowsType;

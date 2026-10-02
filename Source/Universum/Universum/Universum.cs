@@ -20,6 +20,16 @@ namespace Universum {
                     original: HarmonyLib.AccessTools.Method(HarmonyLib.AccessTools.TypeByName("SectionLayer_Terrain"), "Regenerate"),
                     postfix: new HarmonyLib.HarmonyMethod(typeof(Utilities.SectionLayer_Terrain_Regenerate).GetMethod("Postfix"))
                 );
+                // PORT 1.6: parche del constructor de Section, a mano y con guarda. Antes se hacia
+                // por atributo y reventaba si la firma del constructor habia cambiado.
+                try {
+                    System.Reflection.ConstructorInfo ctorSection = HarmonyLib.AccessTools.Constructor(typeof(Verse.Section), new[] { typeof(Verse.IntVec3), typeof(Verse.Map) });
+                    if (ctorSection != null) {
+                        harmony.Patch(original: ctorSection, postfix: new HarmonyLib.HarmonyMethod(typeof(Utilities.Section_Constructor).GetMethod("Postfix")));
+                    } else {
+                        Verse.Log.Warning("[Universum PORT 1.6] No existe Section(IntVec3, Map): el parche del constructor queda sin aplicar.");
+                    }
+                } catch (System.Exception e) { Verse.Log.Warning("[Universum PORT 1.6] Fallo parcheando el constructor de Section: " + e.Message); }
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
             } catch (System.Exception e) {
                 Verse.Log.Error("[Universum PORT 1.6] Fallo aplicando parches. El mod SIGUE cargando, pero puede quedar incompleto: " + e.ToString());
