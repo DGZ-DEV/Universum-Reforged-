@@ -410,3 +410,52 @@
    rondas. Se hara con el cuerpo delante, no a ciegas.
 
  SIGUIENTE: paso 7, RimNauts 2 encima. Activado en ModsConfig despues de Universum.
+
+================================================================================
+ 02/10: OBJETIVO CUMPLIDO. LOS DOS MODS PORTADOS Y VERIFICADOS
+================================================================================
+
+ Evidencia de la ultima sesion (Player.log, 01:11:42):
+   Excepciones y errores de XML en todo el registro: 0
+   [Universum PORT 1.6] Harmony ha parcheado 51 metodos. 0 autodesactivados, 0 sin objetivo
+   [RimNauts2 PORT 1.6] Harmony ha parcheado 13 metodos de este mod
+   [Universum PORT 1.6] El generador ha colocado 2025 objetos celestes
+   Universum (v2.4.0) has successfully loaded.
+   RimNauts 2 (v5.4.0) has successfully loaded.
+
+ UNIVERSUM (framework), los 7 pasos:
+   1. Compila con 0 errores y 0 avisos.
+   2. Carga sin una sola excepcion.
+   3. Sin errores de XML ni de definiciones.
+   4. 51 parches aplicados, confirmados por registro.
+   5. El planeta y sus capas se dibujan.
+   6. Convive con los cinco DLC, Odyssey incluido.
+
+ RIMNAUTS 2, los 7 pasos:
+   1. Compila con 0 errores y 0 avisos.
+   2. Carga sin excepciones.
+   3. Sin errores de XML (los tres que daba, corregidos).
+   4. 13 parches aplicados, confirmados por registro.
+   5. Coloca y dibuja su contenido: 2.025 objetos celestes, confirmado en el mapa del planeta.
+   6. Convive con Odyssey y con el framework.
+   7. Verificado encima de Universum, que era la dependencia.
+
+ LA CAUSA QUE COSTO MAS ENCONTRAR (y merece quedar escrita):
+   En 1.6, heredar de WorldGenStep NO basta para que el juego ejecute un paso de generacion.
+   Hacen falta DOS cosas: el def WorldGenStepDef que registra la clase, y que la PlanetLayerDef
+   correspondiente LO ENUMERE en su lista <worldGenSteps>. Universum tenia lo primero desde
+   siempre; le faltaba lo segundo. El generador existia, compilaba, parcheaba 51 metodos y
+   nadie lo llamaba nunca: el mod hacia la mitad de su trabajo en silencio, sin un solo error,
+   sin un aviso y sin una excepcion. Solo se detecta preguntandose "y esto quien lo llama?".
+
+ PENDIENTES CONOCIDOS, documentados y no bloqueantes:
+   1. SectionLayer_FinalizeMesh: retirado con aviso. Harmony indico el destino correcto
+      (Verse.MapDrawLayer::FinalizeMesh(MeshParts)), pero su prefijo tiene una firma que ya no
+      corresponde y una firma equivocada genera IL invalido, que fue el fallo que costo cinco
+      rondas al principio. Se hara con el cuerpo delante, no a ciegas.
+   2. NullReferenceException en RimWorld.CompTransporter::CompGetGizmosExtra, visto una vez al
+      intentar rellenar el combustible de un lanzador del mod. No se ha reproducido despues.
+      Localizado en la pila, pendiente de arreglar.
+
+ REPOSITORIOS: Universum 28 commits, RimNauts 2 9 commits. Los dos con arbol limpio y con el
+ original pristino como primer commit, para que el diff del port sea revisable entero.
