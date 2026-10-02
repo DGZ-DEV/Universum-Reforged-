@@ -23,6 +23,14 @@ namespace Universum {
                 // PORT 1.6: parche del constructor de Section, a mano y con guarda. Antes se hacia
                 // por atributo y reventaba si la firma del constructor habia cambiado.
                 try {
+                    System.Reflection.MethodInfo finalizeMesh = HarmonyLib.AccessTools.Method(typeof(Verse.SectionLayer), "FinalizeMesh");
+                    if (finalizeMesh != null) {
+                        harmony.Patch(original: finalizeMesh, prefix: new HarmonyLib.HarmonyMethod(typeof(Utilities.SectionLayer_FinalizeMesh).GetMethod("Prefix")));
+                    } else {
+                        Verse.Log.Warning("[Universum PORT 1.6] No se encontro SectionLayer.FinalizeMesh: el parche queda sin aplicar.");
+                    }
+                } catch (System.Exception e) { Verse.Log.Warning("[Universum PORT 1.6] Fallo parcheando SectionLayer.FinalizeMesh: " + e.Message); }
+                try {
                     System.Reflection.ConstructorInfo ctorSection = HarmonyLib.AccessTools.Constructor(typeof(Verse.Section), new[] { typeof(Verse.IntVec3), typeof(Verse.Map) });
                     if (ctorSection != null) {
                         harmony.Patch(original: ctorSection, postfix: new HarmonyLib.HarmonyMethod(typeof(Utilities.Section_Constructor).GetMethod("Postfix")));

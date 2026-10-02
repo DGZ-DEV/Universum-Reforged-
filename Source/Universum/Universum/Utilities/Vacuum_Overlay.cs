@@ -106,7 +106,10 @@ namespace Universum.Utilities {
     /**
      * Source: https://github.com/SonicTHI/SaveOurShip2Experimental/blob/ecaf9bba7975524b61bb1d7f1a37655f5be35e20/Source/1.4/ShipInteriorMod2.cs#L2283
      */
-    [HarmonyPatch(typeof(SectionLayer), "FinalizeMesh", null)]
+    // PORT 1.6: era [HarmonyPatch(typeof(SectionLayer), "FinalizeMesh", null)]. Harmony no
+    // resolvia el objetivo ("Undefined target method"): el miembro existe, pero en 1.6 debe de
+    // estar declarado en una clase base y no ser publico, y GetMethod no ve los privados
+    // heredados. Se parchea a mano desde Universum.cs con guarda de nulo.
     public static class SectionLayer_FinalizeMesh {
         public static bool Prefix(SectionLayer __instance, Section ___section) {
             if (!Cache.allowed_utility("universum.vacuum_overlay")) return true;
