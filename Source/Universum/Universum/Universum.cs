@@ -19,7 +19,7 @@ namespace Universum {
                 );
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
             } catch (System.Exception e) {
-                Verse.Log.Error("[Universum PORT 1.6] Fallo aplicando parches. El mod SIGUE cargando, pero puede quedar incompleto: " + e.Message);
+                Verse.Log.Error("[Universum PORT 1.6] Fallo aplicando parches. El mod SIGUE cargando, pero puede quedar incompleto: " + e.ToString());
             }
             PortVerification.Log(harmony);
             // print mod info
