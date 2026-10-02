@@ -107,9 +107,18 @@ namespace Universum {
         }
 
         private static System.Reflection.MemberInfo MiembroBioma(Type tipo) {
-            System.Reflection.FieldInfo f = tipo.GetField("biome", Banderas);
-            if (f != null) return f;
-            return tipo.GetProperty("biome", Banderas);
+            // PORT 1.6: las casillas de la superficie son de tipo SurfaceTile y el campo "biome" lo
+            // HEREDAN de Tile. GetField sobre el tipo concreto NO encuentra los miembros privados de
+            // la clase base, asi que hay que recorrer la jerarquia declarante a declarante. Sin esto,
+            // el bioma del generador y la mascara de oceano no funcionaban, y el unico sintoma era el
+            // aviso del propio helper.
+            for (Type t = tipo; t != null; t = t.BaseType) {
+                System.Reflection.FieldInfo f = t.GetField("biome", Banderas | System.Reflection.BindingFlags.DeclaredOnly);
+                if (f != null) return f;
+                System.Reflection.PropertyInfo p = t.GetProperty("biome", Banderas | System.Reflection.BindingFlags.DeclaredOnly);
+                if (p != null) return p;
+            }
+            return null;
         }
 
         private static void Avisar(Type tipo) {
