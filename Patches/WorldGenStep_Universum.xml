@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <!-- PORT 1.6: segunda mitad del arreglo del generador. Con el WorldGenStepDef la clase queda
+       registrada, pero ademas la capa tiene que LISTARLA en su <worldGenSteps>: la capa Surface
+       enumera Terrain, Lakes, Rivers, Mutators, Landmarks, AncientSites, AncientRoads, Pollution,
+       Factions, Roads y Features. Un paso que no este en esa lista no se ejecuta en ninguna capa. -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps</xpath>
+    <value>
+      <li>Universum_Generator</li>
+    </value>
+  </Operation>
+
+</Patch>
