@@ -8,6 +8,9 @@ namespace Universum {
         static Universum() {
             // apply patch on internal class
             HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("sindre0830.universum");
+            // Diagnostico ANTES de parchear: si el estado cambia entre Prepare() y el parcheo
+            // real, esto lo delata. Es lo unico que me queda para nombrar al culpable.
+            PortVerification.Log(harmony);
             // PORT 1.6: todo el parcheo va en un try/catch. Si un solo parche falla (por ejemplo un
             // transpiler escrito para una firma antigua), Harmony lanza y ANTES se llevaba por delante
             // el resto del constructor: ni ajustes, ni definiciones, ni assets. Con esto el mod carga
