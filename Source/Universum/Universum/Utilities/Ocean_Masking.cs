@@ -1,0 +1,30 @@
+using System.Linq;
+using Verse;
+
+namespace Universum.Utilities {
+    /**
+     * Masks biome tile as ocean to apply ocean material when drawing planet.
+     */
+    [HarmonyLib.HarmonyPatch(typeof(RimWorld.BiomeDef), "DrawMaterial", HarmonyLib.MethodType.Getter)]
+    public static class BiomeDef_DrawMaterial {
+        public static void Prefix(ref RimWorld.BiomeDef __instance) {
+            if (Cache.allowed_utility(__instance, "universum.ocean_masking")) __instance = RimWorld.BiomeDefOf.Ocean;
+        }
+    }
+
+    /**
+     * Removes yellow material from planet tile used to show location of last map clicked on.
+     * Without this it just added a yellow circle in the ocean.
+     */
+    [HarmonyLib.HarmonyPatch]
+    public static class WorldLayer_CurrentMapTile_Tile {
+        public static bool Prepare() => TargetMethod() != null;
+
+        public static System.Reflection.MethodBase TargetMethod() => HarmonyLib.AccessTools.Method("RimWorld.Planet.WorldDrawLayer_CurrentMapTile:get_Tile");
+
+        public static void Postfix(ref RimWorld.Planet.PlanetTile __result) {
+            if (__result == -1) return;
+            if (Cache.allowed_utility(WorldGridHelper.GetBiome(__result), "universum.ocean_masking")) __result = -1;
+        }
+    }
+}
