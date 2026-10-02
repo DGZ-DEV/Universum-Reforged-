@@ -1,0 +1,8 @@
+C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\obj\Release\Universum.csproj.AssemblyReference.cache
+C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\obj\Release\Universum.GeneratedMSBuildEditorConfig.editorconfig
+C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\obj\Release\Universum.csproj.CoreCompileInputs.cache
+C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\obj\Release\Universum.sourcelink.json
+C:\RimWorld\Mods\Universum (Reforged)\Assemblies\Universum.dll
+C:\RimWorld\Mods\Universum (Reforged)\Assemblies\Universum.pdb
+C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\obj\Release\Universum.dll
+C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\obj\Release\Universum.pdb
