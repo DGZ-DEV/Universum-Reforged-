@@ -18,7 +18,7 @@ namespace Universum.World.Patch {
             var type = AccessTools.TypeByName("Verse.GetOrGenerateMapUtility");
             if (type == null) return null;
 
-            var method = AccessTools.Method(type, "GetOrGenerateMap", new Type[] { typeof(int), typeof(IntVec3), typeof(RimWorld.WorldObjectDef) });
+            var method = AccessTools.Method(type, "GetOrGenerateMap", new Type[] { typeof(RimWorld.Planet.PlanetTile), typeof(IntVec3), typeof(RimWorld.WorldObjectDef), typeof(System.Collections.Generic.IEnumerable<Verse.GenStepWithParams>), typeof(bool) });
             if (method == null) return null;
 
             return method;
