@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Verse;
 
 namespace Universum.Defs {
@@ -21,6 +21,9 @@ namespace Universum.Defs {
                     celestialObjectGenerationStartUpSteps[celestialObjectGenerationStep.defName] = celestialObjectGenerationStep;
                 } else if (celestialObjectGenerationStep.initializationType == InitializationType.RANDOM) {
                     celestialObjectGenerationRandomSteps[celestialObjectGenerationStep.defName] = celestialObjectGenerationStep;
+                    // PORT 1.6: si estas dos listas salen vacias, el generador no coloca nada y el mundo
+                    // se ve normal. Es el sintoma de que no aparezcan asteroides ni cuerpos celestes.
+                    Verse.Log.Message("[Universum PORT 1.6] Defs de generacion: " + celestialObjects.Count + " CelestialObject, " + celestialObjectGenerationStartUpSteps.Count + " ObjectGeneration de arranque, " + celestialObjectGenerationRandomSteps.Count + " aleatorios.");
                 }
                 _totalDefs++;
             }
