@@ -15,14 +15,18 @@ namespace Universum.World {
         }
 
         public static void GenerateOnStartUp() {
+            // PORT 1.6: cuenta lo que se coloca de verdad. Si crea objetos y no se ven, el fallo
+            // esta en el dibujado; si no crea ninguno, esta en la colocacion.
+            int __colocados = 0;
             foreach (Defs.ObjectGeneration objectGenerationStep in Defs.Loader.celestialObjectGenerationStartUpSteps.Values) {
                 int total = Settings.totalToSpawnGenStep[objectGenerationStep.defName];
                 for (int i = 0; i < total; i++) {
                     string celestialDefName = objectGenerationStep.objectGroup.RandomElementByWeight(o => o.tickets).celestialDefName;
                     if (Defs.Loader.celestialObjects[celestialDefName].objectHolder != null) {
-                        CreateObjectHolder(celestialDefName);
-                    } else Create(celestialDefName);
+                        CreateObjectHolder(celestialDefName); __colocados++;
+                    } else Create(celestialDefName); __colocados++;
                 }
+            Verse.Log.Message("[Universum PORT 1.6] El generador ha colocado " + __colocados + " objetos celestes.");
             }
         }
 
