@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Verse;
 
 namespace Universum.Utilities {
@@ -182,27 +182,27 @@ namespace Universum.Utilities {
     public static class Cache {
         public static Caching_Handler caching_handler;
 
-        public static bool allowed_utility(string utility) => caching_handler.allowed_utility(utility);
+        public static bool allowed_utility(string utility) => caching_handler != null && caching_handler.allowed_utility(utility);
 
-        public static bool allowed_utility(Map map, string utility) => caching_handler.allowed_utility(map, utility);
+        public static bool allowed_utility(Map map, string utility) => caching_handler != null && caching_handler.allowed_utility(map, utility);
 
-        public static bool allowed_utility(RimWorld.BiomeDef biome, string utility) => caching_handler.allowed_utility(biome, utility);
+        public static bool allowed_utility(RimWorld.BiomeDef biome, string utility) => caching_handler != null && caching_handler.allowed_utility(biome, utility);
 
-        public static bool allowed_utility(TerrainDef terrain, string utility) => caching_handler.allowed_utility(terrain, utility);
+        public static bool allowed_utility(TerrainDef terrain, string utility) => caching_handler != null && caching_handler.allowed_utility(terrain, utility);
 
-        public static bool allowed_utility(GeneDef gene, string utility) => caching_handler.allowed_utility(gene, utility);
+        public static bool allowed_utility(GeneDef gene, string utility) => caching_handler != null && caching_handler.allowed_utility(gene, utility);
 
-        public static float temperature(Map map) => caching_handler.temperature(map);
+        public static float temperature(Map map) => caching_handler == null ? 0f : caching_handler.temperature(map);
 
-        public static Vacuum_Protection spacesuit_protection(Pawn pawn) => caching_handler.spacesuit_protection(pawn);
+        public static Vacuum_Protection spacesuit_protection(Pawn pawn) => caching_handler == null ? default(Vacuum_Protection) : caching_handler.spacesuit_protection(pawn);
 
-        public static void remove(Map map) => caching_handler.remove(map);
+        public static void remove(Map map) { if (caching_handler == null) return; caching_handler.remove(map); }
 
-        public static void remove(Pawn pawn) => caching_handler.remove(pawn);
+        public static void remove(Pawn pawn) { if (caching_handler == null) return; caching_handler.remove(pawn); }
 
-        public static void clear_utility_toggle() => caching_handler.clear_utility_toggle();
+        public static void clear_utility_toggle() { if (caching_handler == null) return; caching_handler.clear_utility_toggle(); }
 
-        public static void clear() => caching_handler.clear();
+        public static void clear() { if (caching_handler == null) return; caching_handler.clear(); }
     }
 
     /**
