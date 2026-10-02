@@ -354,3 +354,41 @@
 
  PENDIENTE: repetir la prueba. Ahora el registro dira "Harmony ha parcheado N metodos" y la lista
    de parches autodesactivados, aunque alguno mas falle.
+
+================================================================================
+ HITO 01/10: EL FRAMEWORK CARGA LIMPIO
+================================================================================
+
+ Player.log de la prueba 8:
+   [Universum PORT 1.6] Harmony ha parcheado 51 metodos.
+     Parches autodesactivados: NINGUNO. Sin objetivo pese a Prepare()=true: NINGUNO
+   Excepciones y avisos en todo el registro: 0
+
+   Universum (v2.4.0) has successfully loaded.
+   13 utilities | 25 biomes | 384 terrains | 232 genes | assets_loaded
+
+ PASOS 1 A 4 DEL OBJETIVO: CERRADOS.
+   1. Compila con 0 errores y 0 avisos.
+   2. Carga sin una sola excepcion en Player.log.
+   3. Sin errores de XML ni de definiciones (defs, biomas, terrenos y genes cargados).
+   4. Confirmado por registro: 51 parches aplicados, ninguno se autodesactiva.
+
+ LO QUE DESBLOQUEO EL ULTIMO PASO:
+   El fallo era SectionLayer_FinalizeMesh. Harmony lo intentaba resolver por atributo y no podia:
+   en 1.6 el metodo no se declara en SectionLayer, sino en Verse.MapDrawLayer con la firma
+   FinalizeMesh(MeshParts tags). La excepcion ABORTABA PatchAll a medias, asi que 12 parches
+   del mod nunca se aplicaban: por eso el recuento ha pasado de 39 a 51.
+
+ PENDIENTE DE ESE PARCHE:
+   SectionLayer_FinalizeMesh queda RETIRADO con aviso. Habria que reapuntarlo a
+   Verse.MapDrawLayer:FinalizeMesh(MeshParts) y adaptar su prefijo, cuya firma actual
+   (SectionLayer __instance, Section ___section) ya no corresponde. No se ha hecho a ciegas
+   porque una firma equivocada vuelve a generar IL invalido: es justo el fallo que costo las
+   cinco primeras rondas. Se hara con el cuerpo del parche delante.
+
+ LO QUE QUEDA DEL FRAMEWORK:
+   Paso 5: comprobar en partida que el planeta y sus capas se dibujan.
+   Paso 6: convivencia con Odyssey (los cinco DLC estan activos y sin errores, asi que sale
+           en la misma prueba).
+   Y despues, el paso 7: RimNauts 2 encima, que lleva rondas esperando en Mods, inactivo,
+   auditado y compilando.
