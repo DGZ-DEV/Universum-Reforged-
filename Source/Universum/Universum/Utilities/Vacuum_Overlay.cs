@@ -226,6 +226,7 @@ namespace Universum.Utilities {
      * Source: https://github.com/SonicTHI/SaveOurShip2Experimental/blob/ecaf9bba7975524b61bb1d7f1a37655f5be35e20/Source/1.4/HideLightingLayersInSpace.cs#L69
      */
     public class MeshRecalculateHelper {
+        private static bool __avisado = false;
         public static List<Task> Tasks = new List<Task>();
         public static List<SectionLayer> LayersToDraw = new List<SectionLayer>();
 
@@ -238,6 +239,7 @@ namespace Universum.Utilities {
         }
 
         private static void recalculate_mesh(object info) {
+            __avisado = false;
             if (!(info is LayerSubMesh mesh)) {
                 Logger.print(
                     Logger.Importance.Error,
@@ -254,12 +256,15 @@ namespace Universum.Utilities {
                 // malla vacia: "Cannot cook Tris/Verts ... no ingredients data" en cada recalculo.
                 // El proposito del metodo es solo RECALCULAR LAS UV a partir de los vertices, no
                 // reconstruir la malla, asi que no hay que limpiar nada mas que las UV.
-                // PORT 1.6: en 1.6 MeshParts.All YA NO incluye las coordenadas de textura, asi que
-                // Clear(MeshParts.All) vacia los vertices pero DEJA LAS UV ACUMULADAS. El bucle de abajo
-                // anade una UV por vertice, de modo que en cada recalculo la lista de UV crecia y la de
-                // vertices empezaba de cero: al no encajar los numeros, Unity se negaba a cocinar la
-                // malla y el registro se llenaba de "Cannot cook Tris/Verts ... no ingredients data",
-                // saltando cada vez que se recalculaba la capa (o sea, al hacer casi cualquier cosa).
+                // El comentario anterior de este mismo parche describia una hipotesis que resulto FALSA
+                // (que las UV se acumulaban). Se deja constancia para no repetir el camino: el error
+                // seguia saliendo en la linea 266, o sea que el arreglo si estaba en el juego y no bastaba.
+                // En vez de encadenar otra deduccion, se MIDE: esta linea escribe los tres recuentos
+                // justo antes de cocinar la malla, que es donde Unity decide si puede o no.
+                if (!__avisado && (mesh.verts.Count == 0 || mesh.uvs.Count != mesh.verts.Count || mesh.colors.Count != mesh.verts.Count)) {
+                    __avisado = true;
+                    Verse.Log.Message("[Universum PORT 1.6] Malla del vacio: verts=" + mesh.verts.Count + " uvs=" + mesh.uvs.Count + " colors=" + mesh.colors.Count + " tris=" + mesh.tris.Count + " (deben coincidir verts, uvs y colors)");
+                }
                 mesh.uvs.Clear();
                 for (var i = 0; i < mesh.verts.Count; i++) {
                     var xdiff = mesh.verts[i].x - Game_UpdatePlay.Center.x;
