@@ -1,0 +1,99 @@
+================================================================================
+ METODO PARA PORTAR UN MOD DE RIMWORLD ENTRE VERSIONES (1.5 -> 1.6)
+ Procedimiento impersonal, repetible. Sale del port de Universum a 1.6.
+================================================================================
+
+ FASE 0 - REUNIR EL MATERIAL
+   - Clonar la fuente (git clone --depth 1, para que el primer commit sea el original
+     pristino) Y descargar el release publicado, que es la referencia de "que hace hoy".
+   - Leer la LICENCIA antes que el codigo: determina que se puede hacer.
+   - Anotar version soportada y fecha del ultimo commit.
+
+ FASE 1 - PONER A COMPILAR
+   - Convertir el csproj antiguo (MSBuild 2003, cuyo espacio de nombres XML rompe los
+     lectores) a estilo SDK, net48, con Microsoft.NETFramework.ReferenceAssemblies.
+   - Reapuntar referencias: juego a ruta absoluta, Harmony a la carpeta de Mods (no al
+     taller de Steam), y las DLL de otros mods a LA VERSION PORTADA, no a la original.
+   - Renombrar el original, NUNCA borrarlo (.csproj.original).
+   - Compilar y CONTAR los errores. Ese numero es el punto de partida.
+
+ FASE 2 - CENSAR ANTES DE TOCAR
+   - Agrupar por archivo, por codigo y por causa. Guardarlo en un documento del mod.
+   - REGLA QUE AHORRA DESANIMOS: el compilador de C# informa POR FASES. Un error de
+     declaracion aborta el analisis de los cuerpos de los metodos, asi que el numero
+     SUBA al arreglar cosas. No es retroceso: son errores que estaban detras.
+     En este port: 6 -> 1 -> 86.
+
+ FASE 3 - CONSTRUIR UN ORACULO DE API
+   - Un ejecutable net48 que carga el Assembly-CSharp real y responde: existe el tipo?
+     el miembro? de que tipo es? CUANTAS SOBRECARGAS tiene? DONDE VIVE este miembro?
+   - Sustituye a la deduccion y a la busqueda de cadenas en el dll, que da FALSOS
+     NEGATIVOS con nombres cortos y comunes (Material, Normal, Rare, FadeRough: todos
+     existian y no los encontraba).
+
+ FASE 4 - ESPEJOS DE REFLEXION
+   Para miembros que pasaron de publicos a privados pero siguen existiendo:
+   - Campos: AccessTools.FieldRefAccess devuelve REFERENCIA, asi que la misma llamada
+     sirve para leer, escribir y pasar a un parametro ref.
+   - Propiedades y metodos privados: MethodInfo + Invoke (funciona con privados sin
+     depender de como se llame un delegado).
+   - Un espejo por tipo de vanilla, en un namespace que los archivos que lo usan vean.
+
+ FASE 5 - LOS TRES PATRONES DE 1.6
+   1. int -> PlanetTile: el indice de casilla del mundo dejo de ser un entero, y eso
+      cambia la FIRMA de muchos metodos de vanilla.
+   2. Renombrados de familia: Traveling->Travelling, TransportPods->Transporters,
+      ActiveDropPod->ActiveTransporter, WorldLayer_*->WorldDrawLayer_*.
+   3. Privatizaciones masivas: miembros que siguen ahi pero ya no son accesibles.
+
+ FASE 6 - BLINDAR Y AUTODIAGNOSTICAR (LO QUE MAS RINDIO)
+   - try/catch alrededor de TODO el parcheo. Un solo parche malo se llevaba por delante
+     el constructor entero (ajustes, definiciones y assets), y desde fuera PARECIA que
+     todo funcionaba.
+   - Una linea de registro al arrancar con: cuantos parches se aplicaron, cuales se
+     autodesactivaron y cuales se quedaron sin objetivo.
+   - Avisos de una sola vez cuando una reflexion no encuentra lo que busca. Uno de esos
+     avisos destapo dos funciones muertas en silencio.
+   - REGLA DE ORO: cuando el error no nombra al culpable, se arregla EL ERROR antes que
+     el codigo. Pasar de e.Message a e.ToString() rompio una racha de cinco hipotesis
+     fallidas seguidas.
+
+ FASE 7 - AUDITAR LOS PUNTOS CIEGOS
+   Todo lo que se resuelve por cadena, por atributo o por firma es un punto ciego.
+   Conviene hacer la lista ENTERA desde el principio, no por partes:
+   - Objetivos por cadena de texto.
+   - Objetivos por atributo, INCLUIDOS LOS CONSTRUCTORES.
+   - Tipo del miembro: metodo, propiedad, campo o constructor.
+   - SOBRECARGAS: si hay varias, la busqueda por nombre es ambigua y devuelve nulo.
+   - Inyecciones de campo ___campo.
+   - Firmas de parametros con tipos del juego.
+
+ FASE 8 - VERIFICAR EN EL JUEGO
+   Siete pasos, en orden: compilar / cargar sin excepciones / XML limpios / parches
+   confirmados por registro / el planeta se dibuja / convivencia con los DLC / y solo
+   entonces el siguiente mod encima.
+   - LEER Player.log, NO la pantalla. Un mod muerto por dentro se ve exactamente igual
+     que uno que funciona.
+   - El juego ES el validador del XML: el compilador no mira las definiciones, y
+     RimWorld dice el campo, el archivo y la linea.
+
+ FASE 9 - DOCUMENTAR Y VERSIONAR
+   - Tres documentos: progreso, errores-y-soluciones, y contexto operativo.
+   - git con el original pristino como primer commit: el diff del port queda revisable.
+   - No es detalle menor: git recupero un archivo de 279 lineas que un script trunco.
+
+================================================================================
+ LAS SIETE REGLAS QUE SALIERON DE ESTE PORT
+================================================================================
+
+   1. COMPILAR NO ES PROBAR. Cuatro fallos compilaban perfecto y rompian el juego.
+   2. EL CONTADOR DE ERRORES SUBA ANTES DE BAJAR. Siempre.
+   3. TODO LO QUE SE RESUELVE POR REFLEXION, CADENA O ATRIBUTO es un punto ciego hasta
+      que se audita.
+   4. LA PANTALLA MIENTE; EL REGISTRO NO. "Funciona bien todo" era RimWorld vanilla con
+      el mod muerto.
+   5. INSTRUMENTAR GANA A DEDUCIR. Cada vez que se dedujo, se fallo; cada vez que el
+      sistema se delato, se avanzo.
+   6. HERRAMIENTA FIABLE ANTES QUE MEMORIA: el oraculo, no la busqueda de cadenas.
+   7. UNA FIRMA EQUIVOCADA NO DA ERROR DE COMPILACION: genera IL invalido y mata el mod
+      en silencio.
