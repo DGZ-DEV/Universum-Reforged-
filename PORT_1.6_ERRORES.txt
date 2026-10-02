@@ -392,3 +392,21 @@
            en la misma prueba).
    Y despues, el paso 7: RimNauts 2 encima, que lleva rondas esperando en Mods, inactivo,
    auditado y compilando.
+
+
+ 01/10: EL FRAMEWORK QUEDA CERRADO (pasos 1 a 6)
+
+
+ Confirmado tambien por el usuario: el mundo se genera y el planeta se ve normal, sin errores.
+
+   Paso 5: CERRADO. El planeta y sus capas se dibujan.
+   Paso 6: CERRADO. Los cinco DLC, Odyssey incluido, estaban activos durante la prueba,
+           y no hubo ni un error de convivencia.
+
+ PENDIENTE MENOR, documentado y no bloqueante:
+   SectionLayer_FinalizeMesh sigue retirado con aviso. Harmony indico el destino correcto
+   (Verse.MapDrawLayer::FinalizeMesh(MeshParts)), pero su prefijo tiene una firma que ya no
+   corresponde y una firma equivocada genera IL invalido, que es el fallo que costo cinco
+   rondas. Se hara con el cuerpo delante, no a ciegas.
+
+ SIGUIENTE: paso 7, RimNauts 2 encima. Activado en ModsConfig despues de Universum.
