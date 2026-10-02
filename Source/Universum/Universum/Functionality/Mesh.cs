@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -19,6 +19,25 @@ namespace Universum.Functionality {
 
         public UnityEngine.Mesh GetUnityMesh() {
             Vector2[] uvs = null;
+            // PORT 1.6: si la forma no genero UV (las esferas, las cajas y el patron de crateres
+            // no lo hacian; solo GenerateTorus y GeneratePlane las rellenaban), la malla salia con
+            // uv = null y Unity se negaba a cocinarla:
+            //   "Cannot cook Tris/Verts for Custom/Cutout_ (UnityEngine.Material): no ingredients
+            //    data". Eran 1.803 lineas en el registro, y los objetos celestes no se dibujaban.
+            // Se genera aqui una proyeccion esferica a partir de las posiciones: sirve para las
+            // esferas, que son la forma dominante, y no molesta en las demas.
+            if (uvs == null && _vertices.Count > 0) {
+                Vector2[] generadas = new Vector2[_vertices.Count];
+                for (int i = 0; i < _vertices.Count; i++) {
+                    Vector3 v = _vertices[i];
+                    float largo = v.magnitude;
+                    generadas[i] = largo > 0.0001f
+                        ? new Vector2(UnityEngine.Mathf.Atan2(v.z, v.x) / (2f * UnityEngine.Mathf.PI) + 0.5f,
+                                        UnityEngine.Mathf.Asin(UnityEngine.Mathf.Clamp(v.y / largo, -1f, 1f)) / UnityEngine.Mathf.PI + 0.5f)
+                        : Vector2.zero;
+                }
+                uvs = generadas;
+            }
             if (_uvs != null) uvs = _uvs.ToArray();
 
             UnityEngine.Mesh unityMesh = new UnityEngine.Mesh {
