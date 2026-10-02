@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- PORT 1.6: el framework hereda de WorldGenStep, pero en 1.6 eso NO basta para que se
+       ejecute: el juego registra sus pasos con defs WorldGenStepDef (ver
+       Core/Defs/WorldGeneration/WorldGenerator.xml). Sin este def, Universum.World.Generator
+       existia, compilaba y parcheaba, pero NADIE lo llamaba nunca, asi que no colocaba
+       ninguno de los mas de 2.000 objetos celestes de RimNauts 2.
+       El orden 1100 lo pone DESPUES de Features (1000): los objetos se colocan sobre
+       casillas que ya existen. -->
+  <WorldGenStepDef>
+    <defName>Universum_Generator</defName>
+    <order>1100</order>
+    <worldGenStep Class="Universum.World.Generator"/>
+  </WorldGenStepDef>
+
+</Defs>
