@@ -248,7 +248,12 @@ namespace Universum.Utilities {
             }
             lock (mesh) {
                 mesh.finalized = false;
-                mesh.Clear(MeshParts.All);
+                // PORT 1.6 (corregido): AQUI ESTABA mesh.Clear(MeshParts.All). Ese Clear vaciaba los
+                // VERTICES, que son la geometria que la capa ya habia generado, asi que el bucle de
+                // abajo recorria cero elementos, no se anadia ninguna UV y FinalizeMesh cocinaba una
+                // malla vacia: "Cannot cook Tris/Verts ... no ingredients data" en cada recalculo.
+                // El proposito del metodo es solo RECALCULAR LAS UV a partir de los vertices, no
+                // reconstruir la malla, asi que no hay que limpiar nada mas que las UV.
                 // PORT 1.6: en 1.6 MeshParts.All YA NO incluye las coordenadas de textura, asi que
                 // Clear(MeshParts.All) vacia los vertices pero DEJA LAS UV ACUMULADAS. El bucle de abajo
                 // anade una UV por vertice, de modo que en cada recalculo la lista de UV crecia y la de
