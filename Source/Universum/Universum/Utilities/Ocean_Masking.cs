@@ -20,7 +20,7 @@ namespace Universum.Utilities {
     public static class WorldLayer_CurrentMapTile_Tile {
         public static bool Prepare() => TargetMethod() != null;
 
-        public static System.Reflection.MethodBase TargetMethod() => HarmonyLib.AccessTools.Method("RimWorld.Planet.WorldLayer_CurrentMapTile:get_Tile");
+        public static System.Reflection.MethodBase TargetMethod() => HarmonyLib.AccessTools.Method("RimWorld.Planet.WorldDrawLayer_CurrentMapTile:get_Tile");
 
         public static void Postfix(ref int __result) {
             if (__result == -1) return;

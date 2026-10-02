@@ -14,9 +14,9 @@ namespace Universum {
     /// </summary>
     internal static class MirrorRoomTemp {
         private static readonly System.Reflection.MethodInfo getMap = AccessTools.PropertyGetter(typeof(Verse.RoomTempTracker), "Map");
-        private static readonly System.Reflection.MethodInfo getRoom = AccessTools.PropertyGetter(typeof(Verse.RoomTempTracker), "room");
+        private static readonly AccessTools.FieldRef<Verse.RoomTempTracker, Room> roomField = AccessTools.FieldRefAccess<Verse.RoomTempTracker, Room>("room");
         public static Map Map(Verse.RoomTempTracker d) { return (Map)getMap.Invoke(d, null); }
-        public static Room room(Verse.RoomTempTracker d) { return (Room)getRoom.Invoke(d, null); }
+        public static Room room(Verse.RoomTempTracker d) { return roomField(d); }
     }
 
     internal static class MirrorWeather {
@@ -32,8 +32,16 @@ namespace Universum {
     }
 
     internal static class MirrorWorldRenderer {
-        private static readonly System.Reflection.FieldInfo worldRenderedNow = AccessTools.Field(typeof(RimWorld.Planet.WorldRendererUtility), "WorldRenderedNow");
-        public static bool WorldRenderedNow { get { return (bool)worldRenderedNow.GetValue(null); } }
+        private static readonly System.Reflection.MethodInfo getWorldRendered = AccessTools.PropertyGetter(typeof(RimWorld.Planet.WorldRendererUtility), "WorldRendered");
+        private static bool aviso;
+        public static bool WorldRenderedNow {
+            get {
+                try {
+                    if (getWorldRendered == null) { if (!aviso) { aviso = true; Verse.Log.Warning("[Universum PORT 1.6] No se encontro WorldRendererUtility.WorldRendered."); } return false; }
+                    return (bool)getWorldRendered.Invoke(null, null);
+                } catch (Exception) { return false; }
+            }
+        }
     }
 
     internal static class MirrorWorldCamera {
@@ -49,24 +57,27 @@ namespace Universum {
         public static readonly AccessTools.FieldRef<RimWorld.Planet.TravellingTransporters, RimWorld.Planet.PlanetTile> destinationTile = AccessTools.FieldRefAccess<RimWorld.Planet.TravellingTransporters, RimWorld.Planet.PlanetTile>("destinationTile");
     }
     internal static class WorldLayersHelper {
-        private static readonly System.Reflection.FieldInfo layersField = AccessTools.Field(typeof(RimWorld.Planet.WorldRenderer), "layers");
+        private static readonly System.Reflection.MethodInfo surfaceGetter = AccessTools.PropertyGetter(typeof(RimWorld.Planet.WorldGrid), "Surface");
+        private static readonly System.Reflection.MethodInfo drawLayersGetter = AccessTools.PropertyGetter(typeof(RimWorld.Planet.PlanetLayer), "WorldDrawLayers");
 
         /// <summary>
-        /// Lee el campo privado 'layers' del renderizador del mundo sin depender del tipo de capa,
-        /// porque en 1.6 las clases WorldLayer_* desaparecieron del juego.
-        /// Devuelve TRUE (hay que regenerar) ante cualquier duda: es el camino prudente, que es
-        /// el que tomaba el codigo original cuando la comprobacion no daba false.
+        /// Lee las capas de dibujado del planeta. En 1.6 las clases WorldLayer_* desaparecieron: ahora
+        /// son WorldDrawLayer y cuelgan de la capa del planeta (WorldGrid.Surface.WorldDrawLayers).
+        /// Devuelve TRUE (hay que regenerar) ante cualquier duda, que es el camino prudente: el codigo
+        /// original solo marcaba Globals.rendered cuando la comprobacion daba false.
         /// </summary>
         public static bool ShouldRegenerate(object renderer) {
             try {
-                if (layersField == null || renderer == null) return true;
-                System.Collections.IList layers = layersField.GetValue(renderer) as System.Collections.IList;
-                if (layers == null || layers.Count == 0) return true;
-                object first = layers[0];
-                if (first == null) return true;
-                System.Reflection.PropertyInfo prop = first.GetType().GetProperty("ShouldRegenerate");
+                if (Find.World == null || surfaceGetter == null || drawLayersGetter == null) return true;
+                object superficie = surfaceGetter.Invoke(Find.World.grid, null);
+                if (superficie == null) return true;
+                System.Collections.IList capas = drawLayersGetter.Invoke(superficie, null) as System.Collections.IList;
+                if (capas == null || capas.Count == 0) return true;
+                object primera = capas[0];
+                if (primera == null) return true;
+                System.Reflection.MethodInfo prop = AccessTools.PropertyGetter(primera.GetType(), "ShouldRegenerate");
                 if (prop == null) return true;
-                return (bool)prop.GetValue(first);
+                return (bool)prop.Invoke(primera, null);
             } catch (Exception) { return true; }
         }
     }
@@ -77,13 +88,16 @@ namespace Universum {
     /// Si no encuentra el miembro, lo DICE UNA VEZ en el registro: eso convierte la duda en un dato.
     /// </summary>
     internal static class WorldGridHelper {
-        private static readonly System.Reflection.FieldInfo tilesField = AccessTools.Field(typeof(RimWorld.Planet.WorldGrid), "tiles");
+        private static readonly System.Reflection.MethodInfo surfaceGetter = AccessTools.PropertyGetter(typeof(RimWorld.Planet.WorldGrid), "Surface");
+        private static readonly System.Reflection.FieldInfo tilesField = AccessTools.Field(typeof(RimWorld.Planet.PlanetLayer), "tiles");
         private static bool avisoDado;
         private static readonly System.Reflection.BindingFlags Banderas = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
 
         private static System.Collections.IList Tiles() {
-            if (Find.World == null || tilesField == null) return null;
-            return tilesField.GetValue(Find.World.grid) as System.Collections.IList;
+            if (Find.World == null || tilesField == null || surfaceGetter == null) return null;
+            object capa = surfaceGetter.Invoke(Find.World.grid, null);
+            if (capa == null) return null;
+            return tilesField.GetValue(capa) as System.Collections.IList;
         }
 
         public static object TileAt(int index) {
