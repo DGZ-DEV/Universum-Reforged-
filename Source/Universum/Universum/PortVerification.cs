@@ -19,6 +19,7 @@ namespace Universum {
                 try { parcheados = harmony.GetPatchedMethods().Count(); } catch (Exception) { }
 
                 List<string> desactivados = new List<string>();
+                List<string> sinObjetivo = new List<string>();
                 Type[] tipos;
                 try { tipos = Assembly.GetExecutingAssembly().GetTypes(); }
                 catch (ReflectionTypeLoadException e) { tipos = e.Types.Where(t => t != null).ToArray(); }
@@ -32,9 +33,17 @@ namespace Universum {
                     bool listo = false;
                     try { listo = (bool)prep.Invoke(null, null); } catch (Exception) { listo = false; }
                     if (!listo) desactivados.Add(t.Name);
+                    else {
+                        System.Reflection.MethodInfo tm = t.GetMethod("TargetMethod", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                        if (tm != null) {
+                            object objetivo = null;
+                            try { objetivo = tm.Invoke(null, null); } catch (Exception) { objetivo = null; }
+                            if (objetivo == null) sinObjetivo.Add(t.Name);
+                        }
+                    }
                 }
 
-                Verse.Log.Message("[Universum PORT 1.6] Harmony ha parcheado " + parcheados + " metodos. Parches autodesactivados por no encontrar su objetivo: " + (desactivados.Count == 0 ? "NINGUNO" : string.Join(", ", desactivados.ToArray())));
+                Verse.Log.Message("[Universum PORT 1.6] Harmony ha parcheado " + parcheados + " metodos. Parches autodesactivados por no encontrar su objetivo: " + (desactivados.Count == 0 ? "NINGUNO" : string.Join(", ", desactivados.ToArray())) + ". Sin objetivo pese a Prepare()=true: " + (sinObjetivo.Count == 0 ? "NINGUNO" : string.Join(", ", sinObjetivo.ToArray())));
             } catch (Exception e) {
                 Verse.Log.Error("[Universum PORT 1.6] Fallo el diagnostico de parches: " + e.Message);
             }
