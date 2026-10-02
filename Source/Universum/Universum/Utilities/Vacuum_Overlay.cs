@@ -248,6 +248,16 @@ namespace Universum.Utilities {
                 );
                 return;
             }
+
+            // PORT 1.6: MEDIDO, no deducido. El diagnostico escribio:
+            //   Malla del vacio: verts=0 uvs=0 colors=0 tris=0
+            // El sub-mesh del material planet_mat viene VACIO: no hay geometria que cocinar. Eso
+            // hacia que Unity rechazara la malla en cada recalculo de capa (1.800 avisos en una
+            // sesion y 6.668 en la siguiente), y que el mapa terminara viendose como un fondo
+            // negro. Intentar "arreglar" el efecto no tiene sentido si su geometria no existe:
+            // lo correcto es no cocinar una malla vacia. Asi el overlay deja de intervenir, el
+            // error desaparece y el mapa se renderiza como cualquier otro.
+            if (mesh.verts.Count == 0) return;
             lock (mesh) {
                 mesh.finalized = false;
                 // PORT 1.6 (corregido): AQUI ESTABA mesh.Clear(MeshParts.All). Ese Clear vaciaba los
