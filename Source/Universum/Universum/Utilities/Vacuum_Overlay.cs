@@ -249,6 +249,13 @@ namespace Universum.Utilities {
             lock (mesh) {
                 mesh.finalized = false;
                 mesh.Clear(MeshParts.All);
+                // PORT 1.6: en 1.6 MeshParts.All YA NO incluye las coordenadas de textura, asi que
+                // Clear(MeshParts.All) vacia los vertices pero DEJA LAS UV ACUMULADAS. El bucle de abajo
+                // anade una UV por vertice, de modo que en cada recalculo la lista de UV crecia y la de
+                // vertices empezaba de cero: al no encajar los numeros, Unity se negaba a cocinar la
+                // malla y el registro se llenaba de "Cannot cook Tris/Verts ... no ingredients data",
+                // saltando cada vez que se recalculaba la capa (o sea, al hacer casi cualquier cosa).
+                mesh.uvs.Clear();
                 for (var i = 0; i < mesh.verts.Count; i++) {
                     var xdiff = mesh.verts[i].x - Game_UpdatePlay.Center.x;
                     var xfromEdge = xdiff + Game_UpdatePlay.CellsWide / 2.0f;
