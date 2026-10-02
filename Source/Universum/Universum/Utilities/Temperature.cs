@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System.Collections.Generic;
 using Verse;
 
@@ -22,8 +22,8 @@ namespace Universum.Utilities {
     [HarmonyPatch(typeof(RoomTempTracker), "WallEqualizationTempChangePerInterval")]
     public static class RoomTempTracker_WallEqualizationTempChangePerInterval {
         public static void Postfix(ref RoomTempTracker __instance, ref float __result) {
-            if (!Cache.allowed_utility(__instance.Map, "universum.vacuum")) return;
-            if (!Cache.allowed_utility(__instance.Map, "universum.temperature")) return;
+            if (!Cache.allowed_utility(MirrorRoomTemp.Map(__instance), "universum.vacuum")) return;
+            if (!Cache.allowed_utility(MirrorRoomTemp.Map(__instance), "universum.temperature")) return;
             __result *= 0.01f;
         }
     }
@@ -31,8 +31,8 @@ namespace Universum.Utilities {
     [HarmonyPatch(typeof(RoomTempTracker), "ThinRoofEqualizationTempChangePerInterval")]
     public static class RoomTempTracker_ThinRoofEqualizationTempChangePerInterval {
         public static void Postfix(ref RoomTempTracker __instance, ref float __result) {
-            if (!Cache.allowed_utility(__instance.Map, "universum.vacuum")) return;
-            if (!Cache.allowed_utility(__instance.Map, "universum.temperature")) return;
+            if (!Cache.allowed_utility(MirrorRoomTemp.Map(__instance), "universum.vacuum")) return;
+            if (!Cache.allowed_utility(MirrorRoomTemp.Map(__instance), "universum.temperature")) return;
             __result *= 0.01f;
         }
     }
@@ -40,10 +40,10 @@ namespace Universum.Utilities {
     [HarmonyPatch(typeof(RoomTempTracker), "EqualizeTemperature")]
     public static class RoomTempTracker_EqualizeTemperature {
         public static void Postfix(RoomTempTracker __instance) {
-            if (!Cache.allowed_utility(__instance.Map, "universum.vacuum")) return;
-            if (!Cache.allowed_utility(__instance.Map, "universum.temperature")) return;
-            if (__instance.room.OpenRoofCount <= 0) return;
-            __instance.Temperature = Cache.temperature(__instance.Map);
+            if (!Cache.allowed_utility(MirrorRoomTemp.Map(__instance), "universum.vacuum")) return;
+            if (!Cache.allowed_utility(MirrorRoomTemp.Map(__instance), "universum.temperature")) return;
+            if (MirrorRoomTemp.room(__instance).OpenRoofCount <= 0) return;
+            __instance.Temperature = Cache.temperature(MirrorRoomTemp.Map(__instance));
         }
     }
 

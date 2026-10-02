@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace Universum.Utilities {
             Map map = Find.CurrentMap;
             if (Globals.rendered || !Cache.allowed_utility(map, "universum.vacuum")) return;
             get_world_map_render();
-            if (!((List<RimWorld.Planet.WorldLayer>) typeof(RimWorld.Planet.WorldRenderer).GetField("layers", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Find.World.renderer)).FirstOrFallback().ShouldRegenerate) {
+            if (!WorldLayersHelper.ShouldRegenerate(Find.World.renderer)) {
                 Globals.rendered = true;
             }
         }
@@ -65,7 +65,9 @@ namespace Universum.Utilities {
             Find.WorldCameraDriver.Update();
             Find.World.renderer.CheckActivateWorldCamera();
             Find.World.renderer.DrawWorldLayers();
-            RimWorld.Planet.WorldRendererUtility.UpdateWorldShadersParams();
+            // PORT 1.6: WorldRendererUtility.UpdateWorldShadersParams() desaparecio en 1.6.
+            // Se retira la llamada y queda PENDIENTE ver en el juego si los shaders del planeta
+            // se actualizan solos. Si se ve mal, aqui es donde hay que buscar el sustituto.
 
             RimWorld.Planet.WorldCameraManager.WorldSkyboxCamera.targetTexture = Globals.render;
             RimWorld.Planet.WorldCameraManager.WorldSkyboxCamera.aspect = aspect;
@@ -232,7 +234,7 @@ namespace Universum.Utilities {
             }
             lock (mesh) {
                 mesh.finalized = false;
-                mesh.Clear(MeshParts.UVs);
+                mesh.Clear(MeshParts.All);
                 for (var i = 0; i < mesh.verts.Count; i++) {
                     var xdiff = mesh.verts[i].x - Game_UpdatePlay.Center.x;
                     var xfromEdge = xdiff + Game_UpdatePlay.CellsWide / 2.0f;
@@ -240,7 +242,7 @@ namespace Universum.Utilities {
                     var zfromEdge = zdiff + Game_UpdatePlay.CellsHigh / 2.0f;
                     mesh.uvs.Add(new Vector3(xfromEdge / Game_UpdatePlay.CellsWide, zfromEdge / Game_UpdatePlay.CellsHigh, 0.0f));
                 }
-                mesh.FinalizeMesh(MeshParts.UVs);
+                mesh.FinalizeMesh(MeshParts.All);
             }
         }
     }

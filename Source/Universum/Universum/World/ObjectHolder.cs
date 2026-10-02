@@ -75,7 +75,7 @@ namespace Universum.World {
             if (caravan.Faction != RimWorld.Faction.OfPlayer) return null;
             // handle colonist memories
             if (Find.AnyPlayerHomeMap == null) {
-                foreach (Pawn podsAliveColonist in RimWorld.PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists) {
+                foreach (Pawn podsAliveColonist in RimWorld.PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_Colonists) {
                     RimWorld.MemoryThoughtHandler memories = podsAliveColonist.needs?.mood?.thoughts?.memories;
                     if (memories != null) {
                         memories.RemoveMemoriesOfDef(RimWorld.ThoughtDefOf.NewColonyOptimism);
@@ -119,7 +119,7 @@ namespace Universum.World {
 
         public bool SafeDespawn() {
             if (HasMap) return false;
-            if (_AnyTravelingTransportPodsHere() || _AnyCaravansHere()) return false;
+            if (_AnyTravellingTransportersHere() || _AnyCaravansHere()) return false;
 
             return true;
         }
@@ -127,14 +127,14 @@ namespace Universum.World {
         public override bool ShouldRemoveMapNow(out bool alsoRemoveWorldObject) {
             alsoRemoveWorldObject = false;
 
-            if (_AnyTravelingTransportPodsHere() || _AnyCaravansHere()) return false;
+            if (_AnyTravellingTransportersHere() || _AnyCaravansHere()) return false;
 
             return base.ShouldRemoveMapNow(out alsoRemoveWorldObject);
         }
 
-        private bool _AnyTravelingTransportPodsHere() {
-            bool IsMatchingPod(TravelingTransportPods pods) => pods.initialTile == Tile || pods.destinationTile == Tile;
-            return Find.World.worldObjects.AllWorldObjects.OfType<RimWorld.Planet.TravelingTransportPods>().Any(IsMatchingPod);
+        private bool _AnyTravellingTransportersHere() {
+            bool IsMatchingPod(TravellingTransporters pods) => MirrorTransporters.initialTile(pods) == Tile || MirrorTransporters.destinationTile(pods) == Tile;
+            return Find.World.worldObjects.AllWorldObjects.OfType<RimWorld.Planet.TravellingTransporters>().Any(IsMatchingPod);
         }
 
         private bool _AnyCaravansHere() {
@@ -185,8 +185,8 @@ namespace Universum.World {
         }
 
         private void _AppendComponentDescriptionParts(StringBuilder sb) {
-            for (int i = 0; i < comps.Count; i++) {
-                string descriptionPart = comps[i].GetDescriptionPart();
+            for (int i = 0; i < MirrorWorldObject.comps(this).Count; i++) {
+                string descriptionPart = MirrorWorldObject.comps(this)[i].GetDescriptionPart();
                 if (!descriptionPart.NullOrEmpty()) {
                     if (sb.Length > 0) {
                         sb.AppendLine();
@@ -198,11 +198,11 @@ namespace Universum.World {
         }
 
         private void _AppendComponentStrings(StringBuilder sb) {
-            for (int i = 0; i < comps.Count; i++) {
-                string text = comps[i].CompInspectStringExtra();
+            for (int i = 0; i < MirrorWorldObject.comps(this).Count; i++) {
+                string text = MirrorWorldObject.comps(this)[i].CompInspectStringExtra();
                 if (!text.NullOrEmpty()) {
                     if (Prefs.DevMode && char.IsWhiteSpace(text[text.Length - 1])) {
-                        Log.ErrorOnce(string.Concat(comps[i].GetType(), " CompInspectStringExtra ended with whitespace: ", text), 25612);
+                        Log.ErrorOnce(string.Concat(MirrorWorldObject.comps(this)[i].GetType(), " CompInspectStringExtra ended with whitespace: ", text), 25612);
                         text = text.TrimEndNewlines();
                     }
 

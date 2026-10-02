@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
@@ -194,7 +194,7 @@ namespace Universum.World {
                     (float) num1,
                     0.0f
                 );
-                _spinRotation = Quaternion.Internal_FromEulerRad(euler);
+                _spinRotation = Quaternion.Euler(euler * Mathf.Rad2Deg);
 
                 _rotation = _axialRotation * _spinRotation;
             }

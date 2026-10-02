@@ -253,3 +253,56 @@
    - TravellingTransporters.initialTile (1): el nombre del campo cambio.
    - PlanetTile (Generator x2, y posiblemente ObjectHolder): el unico que exige pensar.
    - ObjectHolder comps (5 x CS0103) + el tipo TravelingTransportPods: hay que leerlo.
+
+================================================================================
+ AVANCE: 39 -> 7 ERRORES. SOLO QUEDA PlanetTile.
+================================================================================
+
+ CERRADO EN ESTA TANDA:
+   RoomTempTracker (7), WeatherDecider (3), ExitMapGrid (1), TickManager.curTimeSpeed (1),
+   WorldRendererUtility.WorldRenderedNow (3), WorldCameraManager.worldSkyboxCameraInt (1)
+     -> resueltos con VanillaMirror.cs, un espejo por tipo de vanilla, en el namespace Universum
+        (asi lo ven Universum.Utilities y Universum.Game por busqueda en el namespace contenedor).
+   ObjectHolder: TravelingTransportPods -> TravellingTransporters, PawnsFinder con DOS L,
+     y los 5 usos de "comps" (miembro de la clase base privatizado) por el espejo (5 lineas).
+   CelestialObject: Quaternion.Internal_FromEulerRad -> Quaternion.Euler(euler * Mathf.Rad2Deg).
+     IMPORTANTE: NO era un cambio directo. Internal_FromEulerRad trabaja en RADIANES y
+     Quaternion.Euler en GRADOS; el codigo ya construia el angulo con (Math.PI/180), asi que
+     un cambio directo habria sido un error de 57x. Se detecto leyendo el codigo.
+   Vacuum_Overlay: MeshParts.UVs -> MeshParts.All (POR VERIFICAR VISUALMENTE), y el typeof() de
+     WorldLayer sustituido por WorldLayersHelper, que lee el campo privado "layers" del
+     renderizador de forma reflexiva y devuelve TRUE ante cualquier duda (el camino prudente).
+   RimWorld.Planet.WorldRendererUtility.UpdateWorldShadersParams(): DESAPARECIDO de 1.6
+     (0 apariciones, igual que ShaderParams, SetShaderParams, UpdateShaders y WorldShaders).
+     Se retira la llamada con una nota en el codigo. PENDIENTE: ver en el juego si los shaders
+     del planeta se actualizan solos. Si se ven mal, ahi hay que buscar.
+
+ LOS 7 QUE QUEDAN: TODOS son el mismo cambio estructural.
+   WorldGrid.tiles ya no es publico, y el indice de casilla dejo de ser int: ahora es la
+   estructura RimWorld.Planet.PlanetTile. Afecta a:
+     Generator.cs ......... L151 (fijar bioma), L152 (RecalculatePerceivedMovementDifficultyAt,
+                            que ahora pide un parametro "needsRecache"), L157 (leer bioma),
+                            L159 (GetTileNeighbors con List<PlanetTile> en vez de List<int>),
+                            L164 (ElementAtOrDefault)
+     Ocean_Masking.cs ..... L27 (leer bioma por indice)
+     Vacuum_Overlay.cs .... L15 (leer bioma por indice)
+
+ PLAN PARA CERRARLO:
+   1. Averiguar la API de 1.6: como se obtiene el objeto de casilla (el que tiene .biome) a
+      partir de un indice int, y como se construye un PlanetTile desde un int.
+   2. Si el objeto de casilla sigue teniendo el miembro "biome", hacerlo con un helper reflexivo
+      (el mismo patron que WorldLayersHelper), que no necesita conocer el tipo en compilacion.
+   3. GetTileNeighbors: cambiar la lista de int a List<PlanetTile>.
+   4. RecalculatePerceivedMovementDifficultyAt: anadir el parametro que falta.
+   ES EL UNICO BLOQUE QUE EXIGE ENTENDER, NO SUSTITUIR. Los otros 79 errores ya estan.
+
+ TRAMPAS DE ESTA TANDA (para el documento de errores):
+   - String.Replace falla EN SILENCIO si no coincide el espaciado exacto. Ya van dos veces.
+     Solucion: expresion regular y CONTAR las sustituciones antes de escribir.
+   - Los archivos del clon usan saltos de linea LF, no CRLF. Partir por "`r`n" deja el archivo
+     en una sola linea y las ediciones por numero de linea no se aplican. Usar ReadAllLines,
+     que es agnostico del salto.
+   - WorldRendererUtility y WorldCameraManager son CLASES ESTATICAS: no valen como argumento
+     de tipo (CS0718). Sus campos estaticos van con FieldInfo + GetValue.
+   - Un reemplazo demasiado amplio toco lineas donde __instance era un Room o un District.
+     El compilador senalo las 3 exactas y se revirtieron solo esas.

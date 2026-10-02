@@ -17,7 +17,7 @@ namespace Universum.World.Patch {
         public static MethodBase TargetMethod() => AccessTools.Method("RimWorld.Planet.TravellingTransporters:get_Start");
 
         public static bool Prefix(RimWorld.Planet.TravellingTransporters __instance, ref Vector3 __result) {
-            ObjectHolder objectHolder = ObjectHolderCache.Get(__instance.initialTile);
+            ObjectHolder objectHolder = ObjectHolderCache.Get(MirrorTransporters.initialTile(__instance));
             if (objectHolder == null) return true;
 
             __result = objectHolder.DrawPos;
@@ -33,7 +33,7 @@ namespace Universum.World.Patch {
         public static MethodBase TargetMethod() => AccessTools.Method("RimWorld.Planet.TravellingTransporters:get_End");
 
         public static bool Prefix(RimWorld.Planet.TravellingTransporters __instance, ref Vector3 __result) {
-            ObjectHolder objectHolder = ObjectHolderCache.Get(__instance.destinationTile);
+            ObjectHolder objectHolder = ObjectHolderCache.Get(MirrorTransporters.destinationTile(__instance));
             if (objectHolder == null) return true;
 
             __result = objectHolder.DrawPos;

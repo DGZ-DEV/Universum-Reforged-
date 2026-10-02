@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -168,7 +168,7 @@ namespace Universum.Game {
         private void _GetFrameData() {
             if (_tickManager != null) {
                 tick = _tickManager.TicksGame;
-                timeSpeed = _tickManager.curTimeSpeed;
+                timeSpeed = MirrorTick.curTimeSpeed(_tickManager);
             }
 
             if (_camera != null) {
@@ -186,11 +186,11 @@ namespace Universum.Game {
                 _wait = true;
                 return;
             }
-            _wait = !RimWorld.Planet.WorldRendererUtility.WorldRenderedNow && !forceUpdate;
+            _wait = !MirrorWorldRenderer.WorldRenderedNow && !forceUpdate;
 
-            bool sceneIsWorld = RimWorld.Planet.WorldRendererUtility.WorldRenderedNow;
+            bool sceneIsWorld = MirrorWorldRenderer.WorldRenderedNow;
             bool sceneSwitched = _prevWorldSceneRendered != sceneIsWorld;
-            _prevWorldSceneRendered = RimWorld.Planet.WorldRendererUtility.WorldRenderedNow;
+            _prevWorldSceneRendered = MirrorWorldRenderer.WorldRenderedNow;
 
             if (sceneSwitched) forceUpdate = true;
 
@@ -234,7 +234,7 @@ namespace Universum.Game {
             if (_camera != null) {
                 _camera.farClipPlane = 500.0f + CameraInfo.maxAltitude;
                 _camera.fieldOfView = CameraInfo.fieldOfView;
-                RimWorld.Planet.WorldCameraManager.worldSkyboxCameraInt.farClipPlane = 500.0f + CameraInfo.maxAltitude;
+                MirrorWorldCamera.worldSkyboxCameraInt_.farClipPlane = 500.0f + CameraInfo.maxAltitude;
             }
 
             for (int i = 0; i < _celestialObjects.Count; i++) {

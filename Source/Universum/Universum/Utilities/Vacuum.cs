@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Verse;
 
 namespace Universum.Utilities {
@@ -8,7 +8,7 @@ namespace Universum.Utilities {
     [HarmonyLib.HarmonyPatch(typeof(ExitMapGrid), "Color", HarmonyLib.MethodType.Getter)]
     public static class ExitMapGrid_Color {
         public static void Postfix(ref ExitMapGrid __instance, ref Color __result) {
-            if (!Cache.allowed_utility(__instance.map, "universum.vacuum")) return;
+            if (!Cache.allowed_utility(MirrorExitMap.map(__instance), "universum.vacuum")) return;
             __result.a = 0;
         }
     }
