@@ -24,7 +24,7 @@ namespace Universum.Utilities {
 
         public static void Postfix(ref int __result) {
             if (__result == -1) return;
-            if (Cache.allowed_utility(Find.World.grid.tiles.ElementAt(__result).biome, "universum.ocean_masking")) __result = -1;
+            if (Cache.allowed_utility(WorldGridHelper.GetBiome(__result), "universum.ocean_masking")) __result = -1;
         }
     }
 }

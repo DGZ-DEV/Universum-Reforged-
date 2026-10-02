@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Verse;
 using UnityEngine;
 
@@ -13,6 +13,7 @@ namespace Universum {
                 postfix: new HarmonyLib.HarmonyMethod(typeof(Utilities.SectionLayer_Terrain_Regenerate).GetMethod("Postfix"))
             );
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+            PortVerification.Log(harmony);
             // print mod info
             Logger.print(
                 Logger.Importance.Info,

@@ -148,22 +148,22 @@ namespace Universum.World {
         }
 
         public static void UpdateTile(int tile, RimWorld.BiomeDef biome) {
-            Find.World.grid.tiles.ElementAt(tile).biome = biome;
-            Find.WorldPathGrid.RecalculatePerceivedMovementDifficultyAt(tile);
+            WorldGridHelper.SetBiome(tile, biome);
+            Find.WorldPathGrid.RecalculatePerceivedMovementDifficultyAt(tile, out _);
         }
 
         public static int GetFreeTile(int startIndex = 1) {
             for (int i = startIndex; i < Find.World.grid.TilesCount; i++) {
-                if (Find.World.grid.tiles.ElementAt(i).biome == Assets.oceanBiomeDef && !Find.World.worldObjects.AnyWorldObjectAt(i)) {
-                    List<int> neighbors = new List<int>();
+                if (WorldGridHelper.GetBiome(i) == Assets.oceanBiomeDef && !Find.World.worldObjects.AnyWorldObjectAt(i)) {
+                    List<RimWorld.Planet.PlanetTile> neighbors = new List<RimWorld.Planet.PlanetTile>();
                     Find.World.grid.GetTileNeighbors(i, neighbors);
                     if (neighbors.Count != 6) continue;
 
                     var flag = false;
                     foreach (var neighbour in neighbors) {
-                        var neighbourTile = Find.World.grid.tiles.ElementAtOrDefault(neighbour);
-                        if (neighbourTile != default(RimWorld.Planet.Tile)) {
-                            if (neighbourTile.biome != Assets.oceanBiomeDef) {
+                        RimWorld.BiomeDef neighbourBiome = WorldGridHelper.GetBiomeDePlanetTile(neighbour);
+                        if (neighbourBiome != null) {
+                            if (neighbourBiome != Assets.oceanBiomeDef) {
                                 flag = true;
                                 break;
                             }
