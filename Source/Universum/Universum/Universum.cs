@@ -14,7 +14,7 @@ namespace Universum {
             // igual y el fallo queda escrito en el registro.
             try {
                 harmony.Patch(
-                    original: HarmonyLib.AccessTools.TypeByName("SectionLayer_Terrain").GetMethod("Regenerate"),
+                    original: HarmonyLib.AccessTools.Method(HarmonyLib.AccessTools.TypeByName("SectionLayer_Terrain"), "Regenerate"),
                     postfix: new HarmonyLib.HarmonyMethod(typeof(Utilities.SectionLayer_Terrain_Regenerate).GetMethod("Postfix"))
                 );
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
