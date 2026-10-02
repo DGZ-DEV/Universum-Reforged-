@@ -24,6 +24,12 @@ namespace Universum.Defs {
                     // PORT 1.6: si estas dos listas salen vacias, el generador no coloca nada y el mundo
                     // se ve normal. Es el sintoma de que no aparezcan asteroides ni cuerpos celestes.
                     Verse.Log.Message("[Universum PORT 1.6] Defs de generacion: " + celestialObjects.Count + " CelestialObject, " + celestialObjectGenerationStartUpSteps.Count + " ObjectGeneration de arranque, " + celestialObjectGenerationRandomSteps.Count + " aleatorios.");
+                    // PORT 1.6: comprueba si las definiciones de contenido de RimNauts 2 estan dentro.
+                    Verse.Log.Message("[Universum PORT 1.6] Contenido de RimNauts 2 -> ThingDef SatelliteOperationsCenter: "
+                        + (DefDatabase<ThingDef>.GetNamedSilentFail("RimNauts2_SatelliteOperationsCenter") != null)
+                        + " | BiomeDef Satellite: " + (DefDatabase<RimWorld.BiomeDef>.GetNamedSilentFail("RimNauts2_Satellite_Biome") != null)
+                        + " | WorldObjectDef CannonShell: " + (DefDatabase<RimWorld.WorldObjectDef>.GetNamedSilentFail("RimNauts2_TravellingDeliveryCannonShell") != null)
+                        + " | CelestialObject: " + celestialObjects.Count + " | ObjectGeneration: " + (celestialObjectGenerationStartUpSteps.Count + celestialObjectGenerationRandomSteps.Count));
                 }
                 _totalDefs++;
             }
