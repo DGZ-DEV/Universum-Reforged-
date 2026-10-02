@@ -14,4 +14,11 @@
         <li IfModActive="aoba.redmoyo">harRacesEvaPatches/RedMoyo</li>
         <li IfModActive="nemonian.mycartel">harRacesEvaPatches/MoyoCartel</li>
     </v1.5>
+    <v1.6>
+        <li>/</li>
+        <li IfModActive="nemonian.my">harRacesEvaPatches/Moyo</li>
+        <li IfModActive="ahndemi.panieltheautomata">harRacesEvaPatches/Paniel</li>
+        <li IfModActive="aoba.redmoyo">harRacesEvaPatches/RedMoyo</li>
+        <li IfModActive="nemonian.mycartel">harRacesEvaPatches/MoyoCartel</li>
+    </v1.6>
 </loadFolders>

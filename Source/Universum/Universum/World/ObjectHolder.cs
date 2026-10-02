@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
@@ -65,7 +65,7 @@ namespace Universum.World {
 
         public void Randomize() => celestialObject.Randomize();
 
-        public override void Tick() { }
+        protected override void Tick() { }
 
         public override void Draw() { }
 

@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
+using RimWorld.Planet;
 
 namespace Universum.World {
     public class Generator : WorldGenStep {
         public override int SeedPart => 0;
 
-        public override void GenerateFresh(string seed) {
+        public override void GenerateFresh(string seed, PlanetLayer layer) {
             Game.MainLoop.instance.FreshGame();
             GenerateOnStartUp();
         }

@@ -1,0 +1,255 @@
+================================================================================
+ PORT DE UNIVERSUM A RIMWORLD 1.6 - CENSO DE ERRORES
+ Generado automaticamente. Este documento define el trabajo que queda.
+================================================================================
+
+ Errores unicos: 86
+
+ OJO: el compilador de C# informa POR FASES. Un error de declaracion (un tipo que no
+ existe en un atributo) aborta el analisis de los cuerpos de los metodos, asi que el
+ numero PUEDE SUBIR al arreglar cosas. No es un retroceso: son errores que estaban
+ detras. Ya paso una vez en este port (6 -> 1 -> 172).
+
+ ---- POR ARCHIVO ----
+   47  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs
+    9  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs
+    8  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs
+    5  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Game\MainLoop.cs
+    5  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Generator.cs
+    5  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum_Overlay.cs
+    3  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Climate.cs
+    1  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Ocean_Masking.cs
+    1  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum.cs
+    1  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\CelestialObject.cs
+    1  C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\TravelingTransportPods.cs
+
+ ---- POR CODIGO ----
+   66  CS1061
+    9  CS0117
+    5  CS0103
+    2  CS1503
+    2  CS0234
+    1  CS0246
+    1  CS7036
+
+ ---- MIEMBROS QUE YA NO SON ACCESIBLES (lista de trabajo para los envoltorios) ----
+   11 x map
+    9 x rotationVelocity
+    7 x desiredAltitude
+    6 x desiredRotationRaw
+    5 x tiles
+    5 x LOCAL: comps
+    5 x desiredRotation
+    5 x MyCamera
+    4 x dragTimeStamps
+    3 x releasedLeftWhileHoldingMiddle
+    3 x WorldRenderedNow
+    2 x UVs
+    2 x AnythingPreventsCameraMotion
+    1 x curTimeSpeed
+    1 x Internal_FromEulerRad
+    1 x room
+    1 x AllMapsCaravansAndTravelingTransportPods_Alive_Colonists
+    1 x TIPO: TravelingTransportPods
+    1 x UpdateWorldShadersParams
+    1 x rotationAnimation_lerpFactor
+    1 x ClampXRotation
+    1 x CalculateCurInputDollyVect
+    1 x fixedTimeStepBuffer
+    1 x worldSkyboxCameraInt
+    1 x initialTile
+    1 x ApplyPositionToGameObject
+    1 x mouseCoveredByUI
+
+ ---- LISTA COMPLETA ----
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Game\MainLoop.cs(171): CS1061: "TickManager" no contiene una definición para "curTimeSpeed" ni un método de extensión accesible "curTimeSpeed" que acepte un primer argumento del tipo "TickManager" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Game\MainLoop.cs(189): CS0117: 'WorldRendererUtility' no contiene una definición para 'WorldRenderedNow'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Game\MainLoop.cs(191): CS0117: 'WorldRendererUtility' no contiene una definición para 'WorldRenderedNow'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Game\MainLoop.cs(193): CS0117: 'WorldRendererUtility' no contiene una definición para 'WorldRenderedNow'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Game\MainLoop.cs(237): CS0117: 'WorldCameraManager' no contiene una definición para 'worldSkyboxCameraInt'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Climate.cs(7): CS1061: "WeatherDecider" no contiene una definición para "map" ni un método de extensión accesible "map" que acepte un primer argumento del tipo "WeatherDecider" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Climate.cs(8): CS1061: "WeatherDecider" no contiene una definición para "map" ni un método de extensión accesible "map" que acepte un primer argumento del tipo "WeatherDecider" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Climate.cs(8): CS1061: "WeatherDecider" no contiene una definición para "map" ni un método de extensión accesible "map" que acepte un primer argumento del tipo "WeatherDecider" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Ocean_Masking.cs(27): CS1061: "WorldGrid" no contiene una definición para "tiles" ni un método de extensión accesible "tiles" que acepte un primer argumento del tipo "WorldGrid" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(25): CS1061: "RoomTempTracker" no contiene una definición para "Map" ni un método de extensión accesible "Map" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(26): CS1061: "RoomTempTracker" no contiene una definición para "Map" ni un método de extensión accesible "Map" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(34): CS1061: "RoomTempTracker" no contiene una definición para "Map" ni un método de extensión accesible "Map" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(35): CS1061: "RoomTempTracker" no contiene una definición para "Map" ni un método de extensión accesible "Map" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(43): CS1061: "RoomTempTracker" no contiene una definición para "Map" ni un método de extensión accesible "Map" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(44): CS1061: "RoomTempTracker" no contiene una definición para "Map" ni un método de extensión accesible "Map" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(45): CS1061: "RoomTempTracker" no contiene una definición para "room" ni un método de extensión accesible "room" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Temperature.cs(46): CS1061: "RoomTempTracker" no contiene una definición para "Map" ni un método de extensión accesible "Map" que acepte un primer argumento del tipo "RoomTempTracker" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum.cs(11): CS1061: "ExitMapGrid" no contiene una definición para "map" ni un método de extensión accesible "map" que acepte un primer argumento del tipo "ExitMapGrid" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum_Overlay.cs(15): CS1061: "WorldGrid" no contiene una definición para "tiles" ni un método de extensión accesible "tiles" que acepte un primer argumento del tipo "WorldGrid" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum_Overlay.cs(43): CS0234: El tipo o el nombre del espacio de nombres 'WorldLayer' no existe en el espacio de nombres 'RimWorld.Planet' (¿falta alguna referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum_Overlay.cs(68): CS0117: 'WorldRendererUtility' no contiene una definición para 'UpdateWorldShadersParams'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum_Overlay.cs(235): CS0117: 'MeshParts' no contiene una definición para 'UVs'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\Utilities\Vacuum_Overlay.cs(243): CS0117: 'MeshParts' no contiene una definición para 'UVs'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\CelestialObject.cs(197): CS0117: 'Quaternion' no contiene una definición para 'Internal_FromEulerRad'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Generator.cs(151): CS1061: "WorldGrid" no contiene una definición para "tiles" ni un método de extensión accesible "tiles" que acepte un primer argumento del tipo "WorldGrid" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Generator.cs(152): CS7036: No se ha dado ningún argumento que corresponda al parámetro requerido "needsRecache" de "WorldPathGrid.RecalculatePerceivedMovementDifficultyAt(PlanetTile, out bool, int?)"
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Generator.cs(157): CS1061: "WorldGrid" no contiene una definición para "tiles" ni un método de extensión accesible "tiles" que acepte un primer argumento del tipo "WorldGrid" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Generator.cs(159): CS1503: Argumento 2: no se puede convertir de 'System.Collections.Generic.List<int>' a 'System.Collections.Generic.List<RimWorld.Planet.PlanetTile>'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Generator.cs(164): CS1061: "WorldGrid" no contiene una definición para "tiles" ni un método de extensión accesible "tiles" que acepte un primer argumento del tipo "WorldGrid" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(78): CS0117: 'PawnsFinder' no contiene una definición para 'AllMapsCaravansAndTravelingTransportPods_Alive_Colonists'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(136): CS0246: El nombre del tipo o del espacio de nombres 'TravelingTransportPods' no se encontró (¿falta una directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(137): CS1503: Argumento 2: no se puede convertir de 'grupo de métodos' a 'System.Func<RimWorld.Planet.TravelingTransportPods, bool>'
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(137): CS0234: El tipo o el nombre del espacio de nombres 'TravelingTransportPods' no existe en el espacio de nombres 'RimWorld.Planet' (¿falta alguna referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(188): CS0103: El nombre 'comps' no existe en el contexto actual
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(189): CS0103: El nombre 'comps' no existe en el contexto actual
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(201): CS0103: El nombre 'comps' no existe en el contexto actual
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(202): CS0103: El nombre 'comps' no existe en el contexto actual
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\ObjectHolder.cs(205): CS0103: El nombre 'comps' no existe en el contexto actual
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\TravelingTransportPods.cs(20): CS1061: "TravellingTransporters" no contiene una definición para "initialTile" ni un método de extensión accesible "initialTile" que acepte un primer argumento del tipo "TravellingTransporters" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(72): CS1061: "WorldCameraDriver" no contiene una definición para "AnythingPreventsCameraMotion" ni un método de extensión accesible "AnythingPreventsCameraMotion" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(87): CS1061: "WorldCameraDriver" no contiene una definición para "releasedLeftWhileHoldingMiddle" ni un método de extensión accesible "releasedLeftWhileHoldingMiddle" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(89): CS1061: "WorldCameraDriver" no contiene una definición para "releasedLeftWhileHoldingMiddle" ni un método de extensión accesible "releasedLeftWhileHoldingMiddle" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(94): CS1061: "WorldCameraDriver" no contiene una definición para "mouseCoveredByUI" ni un método de extensión accesible "mouseCoveredByUI" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(111): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotationRaw" ni un método de extensión accesible "desiredRotationRaw" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(134): CS1061: "WorldCameraDriver" no contiene una definición para "desiredAltitude" ni un método de extensión accesible "desiredAltitude" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(135): CS1061: "WorldCameraDriver" no contiene una definición para "desiredAltitude" ni un método de extensión accesible "desiredAltitude" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(135): CS1061: "WorldCameraDriver" no contiene una definición para "desiredAltitude" ni un método de extensión accesible "desiredAltitude" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(139): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotation" ni un método de extensión accesible "desiredRotation" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(142): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotation" ni un método de extensión accesible "desiredRotation" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(147): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotation" ni un método de extensión accesible "desiredRotation" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(152): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotation" ni un método de extensión accesible "desiredRotation" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(157): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotation" ni un método de extensión accesible "desiredRotation" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(173): CS1061: "WorldCameraDriver" no contiene una definición para "MyCamera" ni un método de extensión accesible "MyCamera" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(177): CS1061: "WorldCameraDriver" no contiene una definición para "CalculateCurInputDollyVect" ni un método de extensión accesible "CalculateCurInputDollyVect" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(180): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(182): CS1061: "WorldCameraDriver" no contiene una definición para "dragTimeStamps" ni un método de extensión accesible "dragTimeStamps" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(182): CS1061: "WorldCameraDriver" no contiene una definición para "releasedLeftWhileHoldingMiddle" ni un método de extensión accesible "releasedLeftWhileHoldingMiddle" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(183): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(183): CS1061: "WorldCameraDriver" no contiene una definición para "dragTimeStamps" ni un método de extensión accesible "dragTimeStamps" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(184): CS1061: "WorldCameraDriver" no contiene una definición para "dragTimeStamps" ni un método de extensión accesible "dragTimeStamps" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(186): CS1061: "WorldCameraDriver" no contiene una definición para "AnythingPreventsCameraMotion" ni un método de extensión accesible "AnythingPreventsCameraMotion" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(188): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(188): CS1061: "WorldCameraDriver" no contiene una definición para "MyCamera" ni un método de extensión accesible "MyCamera" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(189): CS1061: "WorldCameraDriver" no contiene una definición para "MyCamera" ni un método de extensión accesible "MyCamera" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(189): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(190): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotationRaw" ni un método de extensión accesible "desiredRotationRaw" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(191): CS1061: "WorldCameraDriver" no contiene una definición para "MyCamera" ni un método de extensión accesible "MyCamera" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(191): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotationRaw" ni un método de extensión accesible "desiredRotationRaw" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(192): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotationRaw" ni un método de extensión accesible "desiredRotationRaw" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(192): CS1061: "WorldCameraDriver" no contiene una definición para "MyCamera" ni un método de extensión accesible "MyCamera" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(194): CS1061: "WorldCameraDriver" no contiene una definición para "dragTimeStamps" ni un método de extensión accesible "dragTimeStamps" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(195): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotationRaw" ni un método de extensión accesible "desiredRotationRaw" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(199): CS1061: "WorldCameraDriver" no contiene una definición para "desiredRotationRaw" ni un método de extensión accesible "desiredRotationRaw" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(200): CS1061: "WorldCameraDriver" no contiene una definición para "fixedTimeStepBuffer" ni un método de extensión accesible "fixedTimeStepBuffer" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(202): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(203): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(204): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(205): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(208): CS1061: "WorldCameraDriver" no contiene una definición para "desiredAltitude" ni un método de extensión accesible "desiredAltitude" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(209): CS1061: "WorldCameraDriver" no contiene una definición para "desiredAltitude" ni un método de extensión accesible "desiredAltitude" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(212): CS1061: "WorldCameraDriver" no contiene una definición para "desiredAltitude" ni un método de extensión accesible "desiredAltitude" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(213): CS1061: "WorldCameraDriver" no contiene una definición para "desiredAltitude" ni un método de extensión accesible "desiredAltitude" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(217): CS1061: "WorldCameraDriver" no contiene una definición para "rotationAnimation_lerpFactor" ni un método de extensión accesible "rotationAnimation_lerpFactor" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(220): CS1061: "WorldCameraDriver" no contiene una definición para "ClampXRotation" ni un método de extensión accesible "ClampXRotation" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(223): CS1061: "WorldCameraDriver" no contiene una definición para "rotationVelocity" ni un método de extensión accesible "rotationVelocity" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+ C:\RimWorld\Mods\Universum (Reforged)\Source\Universum\Universum\World\Patch\WorldCameraDriver.cs(224): CS1061: "WorldCameraDriver" no contiene una definición para "ApplyPositionToGameObject" ni un método de extensión accesible "ApplyPositionToGameObject" que acepte un primer argumento del tipo "WorldCameraDriver" (¿falta alguna directiva using o una referencia de ensamblado?)
+
+================================================================================
+ ESTRATEGIA: EL DIAGNOSTICO QUE DECIDE EL PORT
+================================================================================
+
+ Se han buscado los 27 miembros que el compilador dice que no existen en los METADATOS
+ del Assembly-CSharp de 1.6. Resultado:
+
+   SOBREVIVEN, PERO AHORA SON PRIVADOS (19 de ellos):
+     rotationVelocity, desiredAltitude, desiredRotationRaw, desiredRotation, MyCamera,
+     dragTimeStamps, releasedLeftWhileHoldingMiddle, AnythingPreventsCameraMotion,
+     mouseCoveredByUI, fixedTimeStepBuffer, rotationAnimation_lerpFactor, ClampXRotation,
+     CalculateCurInputDollyVect, ApplyPositionToGameObject, worldSkyboxCameraInt,
+     WorldRenderedNow, curTimeSpeed, room, tiles
+   -> NO hay que buscar sustitutos. Se accede con AccessTools (FieldRefAccess o MethodInvoker),
+      que es trabajo mecanico: un envoltorio por miembro y cambiar las llamadas.
+
+   SOLO UNO HA DESAPARECIDO DE VERDAD:
+     UpdateWorldShadersParams   -> hay que encontrar sustituto o retirar esa actualizacion
+
+   RENOMBRADOS MENORES (cambia una letra):
+     PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists
+       -> ...AllMapsCaravansAndTravellingTransporters_Alive_Colonists   (Traveling -> Travelling)
+     RimWorld.Planet.TravelingTransportPods -> RimWorld.Planet.TravellingTransporters
+
+   CAMBIO ESTRUCTURAL DE VERDAD (el unico):
+     El indice de casilla del mundo deja de ser int y pasa a ser la estructura PlanetTile.
+     WorldGrid.tiles existe pero es privado, y hay conversiones List<int> -> List<PlanetTile>.
+     Afecta a Generator, ObjectHolder, Ocean_Masking y Vacuum.
+
+ REPARTO DEL TRABAJO (86 errores unicos)
+   World\Patch\WorldCameraDriver.cs ... 47   <- la mitad del port, y son 15 privados distintos
+   World\ObjectHolder.cs .............  9
+   Utilities\Temperature.cs ..........  8
+   Game\MainLoop.cs ..................  5
+   World\Generator.cs ................  5
+   Utilities\Vacuum_Overlay.cs .......  5
+   Utilities\Climate.cs ..............  3
+   Utilities\Ocean_Masking.cs ........  1
+   Utilities\Vacuum.cs ...............  1
+   World\CelestialObject.cs ..........  1
+   World\Patch\TravelingTransportPods.cs  1
+
+ PLAN, POR ORDEN
+   1. Envoltorio de reflexion para los privados de WorldCameraDriver (47 errores de golpe).
+      Se hace como clase de apoyo con los FieldRef cacheados en campos estaticos readonly,
+      que es el patron que ya usa este mod en otros parches.
+   2. Los privados de los demas archivos: map (11), room (1), tiles (5), curTimeSpeed (1),
+      worldSkyboxCameraInt (1), WorldRenderedNow (3), UVs (2), Internal_FromEulerRad (1).
+   3. Renombrados: Travelling con dos L (2 sitios).
+   4. PlanetTile: el unico que exige pensar, no sustituir.
+   5. UpdateWorldShadersParams: buscar sustituto o retirar.
+   6. ObjectHolder: los 5 errores de "comps" (referencia a un miembro heredado que ya no
+      esta donde estaba) mas el tipo TravelingTransportPods en L136-137.
+
+ CONCLUSION: de 86 errores, ~75 son "acceso a algo que sigue existiendo". Eso es trabajo
+ de mecanica, no de diseno. El port es viable y acotado.
+
+================================================================================
+ AVANCE: 86 -> 39 ERRORES
+================================================================================
+
+ HECHO: WorldCameraDriver.cs queda SIN ERRORES (eran 47, mas de la mitad del port).
+
+ COMO: se creo WorldCameraMirror.cs, un espejo de los miembros privados de
+ RimWorld.Planet.WorldCameraDriver. En 1.6 pasaron de publicos a privados pero siguen
+ existiendo con el mismo nombre, asi que se accede por reflexion en vez de reescribir
+ la logica de la camara del mod.
+
+   - 9 CAMPOS con AccessTools.FieldRefAccess: rotationVelocity, desiredRotationRaw,
+     desiredRotation, desiredAltitude, fixedTimeStepBuffer, rotationAnimation_lerpFactor,
+     releasedLeftWhileHoldingMiddle, mouseCoveredByUI, dragTimeStamps.
+     Devuelve REFERENCIA, asi que la misma llamada sirve para leer, para escribir y para
+     pasarla a un parametro ref (Gen.FixedTimeStepUpdate(ref ...)).
+   - 2 PROPIEDADES privadas por AccessTools.PropertyGetter + Invoke: MyCamera,
+     AnythingPreventsCameraMotion.
+   - 3 METODOS privados por AccessTools.Method + Invoke: CalculateCurInputDollyVect,
+     ClampXRotation (con parametro ref, se le pasa un object[]), ApplyPositionToGameObject.
+
+ TRAMPA DE HARMONY 2.4.1: MethodInvoker es una CLASE ESTATICA, no un delegado, asi que
+ no se puede declarar "private static readonly MethodInvoker x = MethodInvoker.GetHandler(...)"
+ (error CS0723). Se resuelve con MethodInfo + Invoke, que ademas funciona con privados.
+
+ LA TRANSFORMACION FUE MECANICA: __instance.campo -> WorldCameraMirror.campo(__instance)
+ por expresion regular (47 sitios), y los 4 sitios de metodos a mano.
+
+ QUEDA (39 errores, por archivo):
+   ObjectHolder.cs .........  9    Temperature.cs .........  8    MainLoop.cs ....  5
+   Generator.cs ............  5    Vacuum_Overlay.cs ......  5    Climate.cs .....  3
+   TravelingTransportPods.cs 1    Ocean_Masking.cs .......  1    Vacuum.cs ......  1
+   CelestialObject.cs ......  1
+
+ Y por causa:
+   - Mas privados que privatizar, MISMO patron que la camara: WorldGrid.tiles (5),
+     RoomTempTracker.Map y .room (8), WeatherDecider.map (3), TickManager.curTimeSpeed (1),
+     WorldRendererUtility.WorldRenderedNow (3), WorldCameraManager.worldSkyboxCameraInt (1),
+     MeshParts.UVs (2), ExitMapGrid.map (1).  -> ~25 de los 39, todo mecanico.
+   - Quaternion.Internal_FromEulerRad (1): es una funcion INTERNA de Unity que ya no esta.
+     El equivalente publico es Quaternion.Euler. Arreglo limpio, no un parche.
+   - WorldRendererUtility.UpdateWorldShadersParams (1): desaparecido de verdad.
+   - WorldLayer_* en Vacuum_Overlay (1): igual que Ocean_Masking, se convierte en parche
+     por cadena autodesactivable.
+   - TravellingTransporters.initialTile (1): el nombre del campo cambio.
+   - PlanetTile (Generator x2, y posiblemente ObjectHolder): el unico que exige pensar.
+   - ObjectHolder comps (5 x CS0103) + el tipo TravelingTransportPods: hay que leerlo.

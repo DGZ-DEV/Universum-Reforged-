@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Verse;
 
 namespace Universum.Utilities {
@@ -16,8 +16,12 @@ namespace Universum.Utilities {
      * Removes yellow material from planet tile used to show location of last map clicked on.
      * Without this it just added a yellow circle in the ocean.
      */
-    [HarmonyLib.HarmonyPatch(typeof(RimWorld.Planet.WorldLayer_CurrentMapTile), "Tile", HarmonyLib.MethodType.Getter)]
+    [HarmonyLib.HarmonyPatch]
     public static class WorldLayer_CurrentMapTile_Tile {
+        public static bool Prepare() => TargetMethod() != null;
+
+        public static System.Reflection.MethodBase TargetMethod() => HarmonyLib.AccessTools.Method("RimWorld.Planet.WorldLayer_CurrentMapTile:get_Tile");
+
         public static void Postfix(ref int __result) {
             if (__result == -1) return;
             if (Cache.allowed_utility(Find.World.grid.tiles.ElementAt(__result).biome, "universum.ocean_masking")) __result = -1;

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System.Reflection;
 using UnityEngine;
 using Verse.Steam;
@@ -69,7 +69,7 @@ namespace Universum.World.Patch {
                 _UpdateReleasedLeftWhileHoldingMiddle(ref __instance);
                 _UpdateMouseCoveredByUI(ref __instance);
 
-                if (__instance.AnythingPreventsCameraMotion) {
+                if (WorldCameraMirror.AnythingPreventsCameraMotion(__instance)) {
                     return false;
                 }
 
@@ -84,14 +84,14 @@ namespace Universum.World.Patch {
 
             private static void _UpdateReleasedLeftWhileHoldingMiddle(ref RimWorld.Planet.WorldCameraDriver __instance) {
                 if (Input.GetMouseButtonUp(0) && Input.GetMouseButton(2)) {
-                    __instance.releasedLeftWhileHoldingMiddle = true;
+                    WorldCameraMirror.releasedLeftWhileHoldingMiddle(__instance) = true;
                 } else if (Event.current.rawType == EventType.MouseDown || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)) {
-                    __instance.releasedLeftWhileHoldingMiddle = false;
+                    WorldCameraMirror.releasedLeftWhileHoldingMiddle(__instance) = false;
                 }
             }
 
             private static void _UpdateMouseCoveredByUI(ref RimWorld.Planet.WorldCameraDriver __instance) {
-                __instance.mouseCoveredByUI = Find.WindowStack.GetWindowAt(UI.MousePositionOnUIInverted) != null;
+                WorldCameraMirror.mouseCoveredByUI(__instance) = Find.WindowStack.GetWindowAt(UI.MousePositionOnUIInverted) != null;
             }
 
             private static void _HandleMouseDrag(ref RimWorld.Planet.WorldCameraDriver __instance) {
@@ -108,7 +108,7 @@ namespace Universum.World.Patch {
                         RimWorld.PlayerKnowledgeDatabase.KnowledgeDemonstrated(RimWorld.ConceptDefOf.WorldCameraMovement, RimWorld.KnowledgeAmount.FrameInteraction);
 
                         currentEventDelta.x *= -1f;
-                        __instance.desiredRotationRaw += currentEventDelta / RimWorld.Planet.GenWorldUI.CurUITileSize() * 0.273f * (Prefs.MapDragSensitivity * CameraInfo.dragSensitivityMultiplier);
+                        WorldCameraMirror.desiredRotationRaw(__instance) += currentEventDelta / RimWorld.Planet.GenWorldUI.CurUITileSize() * 0.273f * (Prefs.MapDragSensitivity * CameraInfo.dragSensitivityMultiplier);
                     }
                 }
             }
@@ -131,30 +131,30 @@ namespace Universum.World.Patch {
                     RimWorld.PlayerKnowledgeDatabase.KnowledgeDemonstrated(RimWorld.ConceptDefOf.WorldCameraMovement, RimWorld.KnowledgeAmount.SpecificInteraction);
                 }
 
-                __instance.desiredAltitude -= num * (__instance.config.zoomSpeed * CameraInfo.zoomSensitivityMultiplier) * __instance.altitude / 12.0f;
-                __instance.desiredAltitude = Mathf.Clamp(__instance.desiredAltitude, RimWorld.Planet.WorldCameraDriver.MinAltitude, CameraInfo.maxAltitude);
+                WorldCameraMirror.desiredAltitude(__instance) -= num * (__instance.config.zoomSpeed * CameraInfo.zoomSensitivityMultiplier) * __instance.altitude / 12.0f;
+                WorldCameraMirror.desiredAltitude(__instance) = Mathf.Clamp(WorldCameraMirror.desiredAltitude(__instance), RimWorld.Planet.WorldCameraDriver.MinAltitude, CameraInfo.maxAltitude);
             }
 
             private static void _HandleKeyMovements(ref RimWorld.Planet.WorldCameraDriver __instance) {
-                __instance.desiredRotation = Vector2.zero;
+                WorldCameraMirror.desiredRotation(__instance) = Vector2.zero;
 
                 if (RimWorld.KeyBindingDefOf.MapDolly_Left.IsDown) {
-                    __instance.desiredRotation.x = -__instance.config.dollyRateKeys;
+                    WorldCameraMirror.desiredRotation(__instance).x = -__instance.config.dollyRateKeys;
                     RimWorld.PlayerKnowledgeDatabase.KnowledgeDemonstrated(RimWorld.ConceptDefOf.WorldCameraMovement, RimWorld.KnowledgeAmount.SpecificInteraction);
                 }
 
                 if (RimWorld.KeyBindingDefOf.MapDolly_Right.IsDown) {
-                    __instance.desiredRotation.x = __instance.config.dollyRateKeys;
+                    WorldCameraMirror.desiredRotation(__instance).x = __instance.config.dollyRateKeys;
                     RimWorld.PlayerKnowledgeDatabase.KnowledgeDemonstrated(RimWorld.ConceptDefOf.WorldCameraMovement, RimWorld.KnowledgeAmount.SpecificInteraction);
                 }
 
                 if (RimWorld.KeyBindingDefOf.MapDolly_Up.IsDown) {
-                    __instance.desiredRotation.y = __instance.config.dollyRateKeys;
+                    WorldCameraMirror.desiredRotation(__instance).y = __instance.config.dollyRateKeys;
                     RimWorld.PlayerKnowledgeDatabase.KnowledgeDemonstrated(RimWorld.ConceptDefOf.WorldCameraMovement, RimWorld.KnowledgeAmount.SpecificInteraction);
                 }
 
                 if (RimWorld.KeyBindingDefOf.MapDolly_Down.IsDown) {
-                    __instance.desiredRotation.y = -__instance.config.dollyRateKeys;
+                    WorldCameraMirror.desiredRotation(__instance).y = -__instance.config.dollyRateKeys;
                     RimWorld.PlayerKnowledgeDatabase.KnowledgeDemonstrated(RimWorld.ConceptDefOf.WorldCameraMovement, RimWorld.KnowledgeAmount.SpecificInteraction);
                 }
             }
@@ -170,58 +170,60 @@ namespace Universum.World.Patch {
                 if (LongEventHandler.ShouldWaitForEvent)
                     return false;
                 if (Find.World == null) {
-                    __instance.MyCamera.gameObject.SetActive(false);
+                    WorldCameraMirror.MyCamera(__instance).gameObject.SetActive(false);
                 } else {
                     if (!Find.WorldInterface.everReset)
                         Find.WorldInterface.Reset();
-                    Vector2 curInputDollyVect = __instance.CalculateCurInputDollyVect();
+                    Vector2 curInputDollyVect = (Vector2)WorldCameraMirror.CalculateCurInputDollyVect(__instance);
                     if (curInputDollyVect != Vector2.zero) {
                         float num = (float) (((double) __instance.altitude - (double) RimWorld.Planet.WorldCameraDriver.MinAltitude) / (CameraInfo.maxAltitude - (double) RimWorld.Planet.WorldCameraDriver.MinAltitude) * 0.850000023841858 + 0.150000005960464);
-                        __instance.rotationVelocity = new Vector2(curInputDollyVect.x, curInputDollyVect.y) * num;
+                        WorldCameraMirror.rotationVelocity(__instance) = new Vector2(curInputDollyVect.x, curInputDollyVect.y) * num;
                     }
-                    if ((!Input.GetMouseButton(2) || SteamDeck.IsSteamDeck && __instance.releasedLeftWhileHoldingMiddle) && __instance.dragTimeStamps.Any()) {
-                        __instance.rotationVelocity += CameraDriver.GetExtraVelocityFromReleasingDragButton(__instance.dragTimeStamps, 5f * CameraInfo.dragVelocityMultiplier);
-                        __instance.dragTimeStamps.Clear();
+                    if ((!Input.GetMouseButton(2) || SteamDeck.IsSteamDeck && WorldCameraMirror.releasedLeftWhileHoldingMiddle(__instance)) && WorldCameraMirror.dragTimeStamps(__instance).Any()) {
+                        WorldCameraMirror.rotationVelocity(__instance) += CameraDriver.GetExtraVelocityFromReleasingDragButton(WorldCameraMirror.dragTimeStamps(__instance), 5f * CameraInfo.dragVelocityMultiplier);
+                        WorldCameraMirror.dragTimeStamps(__instance).Clear();
                     }
-                    if (!__instance.AnythingPreventsCameraMotion) {
+                    if (!WorldCameraMirror.AnythingPreventsCameraMotion(__instance)) {
                         float num = Time.deltaTime * CameraDriver.HitchReduceFactor;
-                        __instance.sphereRotation *= Quaternion.AngleAxis(__instance.rotationVelocity.x * num * __instance.config.rotationSpeedScale, __instance.MyCamera.transform.up);
-                        __instance.sphereRotation *= Quaternion.AngleAxis(-__instance.rotationVelocity.y * num * __instance.config.rotationSpeedScale, __instance.MyCamera.transform.right);
-                        if (__instance.desiredRotationRaw != Vector2.zero) {
-                            __instance.sphereRotation *= Quaternion.AngleAxis(__instance.desiredRotationRaw.x, __instance.MyCamera.transform.up);
-                            __instance.sphereRotation *= Quaternion.AngleAxis(-__instance.desiredRotationRaw.y, __instance.MyCamera.transform.right);
+                        __instance.sphereRotation *= Quaternion.AngleAxis(WorldCameraMirror.rotationVelocity(__instance).x * num * __instance.config.rotationSpeedScale, WorldCameraMirror.MyCamera(__instance).transform.up);
+                        __instance.sphereRotation *= Quaternion.AngleAxis(-WorldCameraMirror.rotationVelocity(__instance).y * num * __instance.config.rotationSpeedScale, WorldCameraMirror.MyCamera(__instance).transform.right);
+                        if (WorldCameraMirror.desiredRotationRaw(__instance) != Vector2.zero) {
+                            __instance.sphereRotation *= Quaternion.AngleAxis(WorldCameraMirror.desiredRotationRaw(__instance).x, WorldCameraMirror.MyCamera(__instance).transform.up);
+                            __instance.sphereRotation *= Quaternion.AngleAxis(-WorldCameraMirror.desiredRotationRaw(__instance).y, WorldCameraMirror.MyCamera(__instance).transform.right);
                         }
-                        __instance.dragTimeStamps.Add(new CameraDriver.DragTimeStamp() {
-                            posDelta = __instance.desiredRotationRaw,
+                        WorldCameraMirror.dragTimeStamps(__instance).Add(new CameraDriver.DragTimeStamp() {
+                            posDelta = WorldCameraMirror.desiredRotationRaw(__instance),
                             time = Time.time
                         });
                     }
-                    __instance.desiredRotationRaw = Vector2.zero;
-                    int num1 = Gen.FixedTimeStepUpdate(ref __instance.fixedTimeStepBuffer, 60f);
+                    WorldCameraMirror.desiredRotationRaw(__instance) = Vector2.zero;
+                    int num1 = Gen.FixedTimeStepUpdate(ref WorldCameraMirror.fixedTimeStepBuffer(__instance), 60f);
                     for (int index = 0; index < num1; ++index) {
-                        if (__instance.rotationVelocity != Vector2.zero) {
-                            __instance.rotationVelocity *= __instance.config.camRotationDecayFactor;
-                            if ((double) __instance.rotationVelocity.magnitude < 0.0500000007450581)
-                                __instance.rotationVelocity = Vector2.zero;
+                        if (WorldCameraMirror.rotationVelocity(__instance) != Vector2.zero) {
+                            WorldCameraMirror.rotationVelocity(__instance) *= __instance.config.camRotationDecayFactor;
+                            if ((double) WorldCameraMirror.rotationVelocity(__instance).magnitude < 0.0500000007450581)
+                                WorldCameraMirror.rotationVelocity(__instance) = Vector2.zero;
                         }
                         if (__instance.config.smoothZoom) {
-                            float num2 = Mathf.Lerp(__instance.altitude, __instance.desiredAltitude, 0.05f);
-                            __instance.desiredAltitude += (num2 - __instance.altitude) * __instance.config.zoomPreserveFactor;
+                            float num2 = Mathf.Lerp(__instance.altitude, WorldCameraMirror.desiredAltitude(__instance), 0.05f);
+                            WorldCameraMirror.desiredAltitude(__instance) += (num2 - __instance.altitude) * __instance.config.zoomPreserveFactor;
                             __instance.altitude = num2;
                         } else {
-                            float num2 = (float) (((double) __instance.desiredAltitude - (double) __instance.altitude) * 0.400000005960464);
-                            __instance.desiredAltitude += __instance.config.zoomPreserveFactor * num2;
+                            float num2 = (float) (((double) WorldCameraMirror.desiredAltitude(__instance) - (double) __instance.altitude) * 0.400000005960464);
+                            WorldCameraMirror.desiredAltitude(__instance) += __instance.config.zoomPreserveFactor * num2;
                             __instance.altitude += num2;
                         }
                     }
-                    __instance.rotationAnimation_lerpFactor += Time.deltaTime * 8f;
+                    WorldCameraMirror.rotationAnimation_lerpFactor(__instance) += Time.deltaTime * 8f;
                     if (Find.PlaySettings.lockNorthUp) {
                         __instance.RotateSoNorthIsUp(false);
-                        __instance.ClampXRotation(ref __instance.sphereRotation);
+                        object[] clampArgs = new object[] { __instance.sphereRotation };
+                WorldCameraMirror.ClampXRotation(__instance, clampArgs);
+                __instance.sphereRotation = (Quaternion)clampArgs[0];
                     }
                     for (int index = 0; index < num1; ++index)
-                        __instance.config.ConfigFixedUpdate_60(ref __instance.rotationVelocity);
-                    __instance.ApplyPositionToGameObject();
+                        __instance.config.ConfigFixedUpdate_60(ref WorldCameraMirror.rotationVelocity(__instance));
+                    WorldCameraMirror.ApplyPositionToGameObject(__instance);
                 }
                 return false;
             }
